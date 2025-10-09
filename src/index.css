@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Styles globaux */
+body {
+  @apply bg-background text-textPrimary font-sans;
+}
+
+/* Styles pour liens et boutons */
+a, button {
+  @apply text-primary hover:text-secondary transition-colors;
+}
+
+/* Exemple de style de section */
+.section {
+  @apply bg-surface p-8 rounded-lg shadow-md;
+}
