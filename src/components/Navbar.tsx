@@ -1,5 +1,5 @@
 // src/components/NavBar.tsx
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
 const NavBar = () => {
