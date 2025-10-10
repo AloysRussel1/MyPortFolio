@@ -2,17 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Styles globaux */
+/* ---------------------------------------------------- */
+/* 1. TYPOGRAPHIE ET COULEURS DE BASE */
+/* ---------------------------------------------------- */
+
 body {
-  @apply bg-background text-textPrimary font-sans;
+  /* Utilisation des nouvelles variables pour la cohérence */
+  @apply bg-darkbg text-sub-text font-sans leading-relaxed;
 }
 
-/* Styles pour liens et boutons */
-a, button {
-  @apply text-primary hover:text-secondary transition-colors;
+/* ---------------------------------------------------- */
+/* 2. CLASSES D'ACCENTUATION ET D'INTERACTION */
+/* ---------------------------------------------------- */
+
+/* Style des titres pour une hiérarchie claire */
+h1 {
+  @apply text-main-text font-extrabold; 
 }
 
-/* Exemple de style de section */
-.section {
-  @apply bg-surface p-8 rounded-lg shadow-md;
+h2 {
+  @apply text-primary font-extrabold text-3xl md:text-4xl mt-12 mb-8; /* Amélioration de la taille et de l'espacement */
+}
+
+/* Liens cliquables */
+a {
+  /* text-sub-text est utilisé pour les liens par défaut */
+  @apply text-sub-text transition-colors duration-300;
+}
+
+a:hover {
+  /* Utilise la couleur d'accentuation principale pour le hover */
+  @apply text-primary; 
+}
+
+/* ---------------------------------------------------- */
+/* 3. CORRECTION UX CRUCIALE (Ancrage de la NavBar) */
+/* ---------------------------------------------------- */
+
+/* Ceci assure que le défilement atterrit juste sous la NavBar fixe (Hauteurs: 64px / 70px) */
+
+html {
+  scroll-behavior: smooth; 
+  scroll-padding-top: 4rem; /* 64px pour les petits écrans */
+}
+
+@media (min-width: 1024px) { 
+  html {
+    scroll-padding-top: 4.5rem; /* ~72px pour les grands écrans */
+  }
+}
+
+/* ---------------------------------------------------- */
+/* 4. CLASSES UTILES ET COMPONENTS */
+/* ---------------------------------------------------- */
+
+/* Style pour les sections réutilisables (remplace .section de votre ancien code) */
+.card-surface {
+  @apply bg-surface p-6 md:p-8 rounded-xl shadow-2xl transition-shadow duration-300 hover:shadow-primary/20;
+}
+
+/* Pour les badges technologiques */
+.tech-badge {
+    @apply px-3 py-1 text-xs font-medium bg-surface text-primary rounded-full border border-primary/50;
 }

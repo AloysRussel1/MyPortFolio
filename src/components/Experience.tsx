@@ -1,6 +1,6 @@
 //import React from 'react'; // Déjà fait
 import { motion } from 'framer-motion';
-import { FaLaptopCode, FaStar, FaHandshake } from 'react-icons/fa'; // Nouvelles icônes
+import { FaLaptopCode, FaHandshake } from 'react-icons/fa'; // Nouvelles icônes
 import { MdOutlineWork } from 'react-icons/md';
 
 const experienceData = [

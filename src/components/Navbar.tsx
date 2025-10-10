@@ -28,7 +28,8 @@ const NavBar = () => {
 
   return (
     <nav className="fixed w-full z-50 bg-gray-900 bg-opacity-95 backdrop-blur-sm shadow-xl border-b border-orange/50">
-      <div className="max-w-7xl mx-auto px-6 lg:px-16 py-4 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-6 lg:px-16 py-2 lg:py-4 flex justify-between items-center">
+        
         
         {/* Logo/Marque : Lien vers l'accueil */}
         <a 
@@ -39,7 +40,7 @@ const NavBar = () => {
           Aloys Russel <span className="text-orange">TONFO</span>
         </a>
 
-        {/* Menu desktop */}
+        {/* Menu desktop (inchangé) */}
         <ul className="hidden lg:flex space-x-8 text-gray-300 font-medium uppercase text-sm tracking-wider items-center">
           {navLinks.map((link) => (
             <li
@@ -73,10 +74,28 @@ const NavBar = () => {
       </div>
 
       {/* Menu mobile dépliant */}
+      {/* LIGNE CORRIGÉE : Utilisation de transition-all, ajout de l'opacité et de pointer-events-none à l'état fermé */}
       <ul 
-        className={`lg:hidden bg-gray-900 w-full text-center py-6 space-y-4 font-medium text-white uppercase transition-max-height duration-500 ease-in-out overflow-hidden ${
-            menuOpen ? 'max-h-screen border-t border-gray-700' : 'max-h-0'
-        }`}
+        className={`
+            lg:hidden 
+            bg-gray-900 
+            w-full 
+            text-center 
+            py-6 
+            space-y-4 
+            font-medium 
+            text-white 
+            uppercase 
+            transition-all 
+            duration-500 
+            ease-in-out 
+            overflow-hidden 
+            ${
+                menuOpen 
+                ? 'max-h-screen border-t border-gray-700 opacity-100 pointer-events-auto' 
+                : 'max-h-0 opacity-0 pointer-events-none'
+            }
+        `}
       >
         {navLinks.map((link) => (
           <li 

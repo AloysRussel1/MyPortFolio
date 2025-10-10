@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 // J'ai besoin de vos images ou de placeholders pour l'exemple
 import projectImg1 from '../assets/projet1.png'; 
 import projectImg2 from '../assets/projet2.png';
-import projectImg3 from '../assets/projet3.png';
+//import projectImg3 from '../assets/projet3.png';
 import projectImg4 from '../assets/ai_school.jpg';
 import projectImg5 from '../assets/ai_school.jpg';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
