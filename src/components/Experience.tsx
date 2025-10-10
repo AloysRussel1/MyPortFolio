@@ -1,65 +1,86 @@
-//import React from 'react';
+//import React from 'react'; // Déjà fait
 import { motion } from 'framer-motion';
-import { FaLaptopCode } from 'react-icons/fa';
+import { FaLaptopCode, FaStar, FaHandshake } from 'react-icons/fa'; // Nouvelles icônes
+import { MdOutlineWork } from 'react-icons/md';
 
 const experienceData = [
   {
     role: 'Développeur Full Stack – Freelance',
-    company: 'Indépendant',
+    company: 'Projets Indépendants',
     period: '2022 – Présent',
+    type: 'tech',
+    icon: <FaLaptopCode className="text-orange w-6 h-6" />,
     description: [
-      'Conception et développement d’applications web modernes et performantes.',
-      'Création et sécurisation d’API REST.',
-      'Intégration de modèles d’IA pour automatiser certaines tâches.',
-      'Support technique et maintenance post-déploiement.',
+      // Accent mis sur le Full Stack et les technologies spécifiques
+      'Pilotage complet du cycle de développement d’applications web en React et Python (Django/Flask).',
+      // Accent mis sur la sécurité et l'IA
+      'Conception d’**API REST sécurisées** (tokenisation, validation), et optimisation de l’UX/UI.',
+      '**Intégration d’algorithmes d’IA** (TensorFlow, Scikit-learn) pour automatiser et optimiser les fonctionnalités clés.',
+      'Gestion du déploiement (notions Docker/AWS) et maintenance technique des solutions produites.',
+    ],
+  },
+  {
+    role: 'Équipier Polyvalent', // Plus professionnel que "Équipier" seul
+    company: 'McDonald’s, Sainte-Agathe-des-Monts, QC',
+    period: '2025 – Présent',
+    type: 'soft',
+    icon: <FaHandshake className="text-white w-6 h-6" />,
+    description: [
+      // Accent mis sur les soft skills et l'intégration
+      'Fournir un service client rapide et courtois dans un environnement bilingue et sous pression.',
+      'Maintenir l’efficacité opérationnelle et la satisfaction client (taux de fidélité élevé).',
+      'Collaboration efficace avec une équipe multiculturelle selon les principes de l’**Agile** (adaptabilité, communication).',
     ],
   },
 ];
 
 const Experience = () => (
-  <section id="experience" className="bg-darkbg text-white py-32 px-8">
-    <h2 className="text-5xl font-bold text-orange mb-16 text-center tracking-wider">Expérience</h2>
+  <section id="experience" className="bg-darkbg text-white py-24 px-6 lg:px-16">
+    <div className="max-w-6xl mx-auto">
+      <h2 className="text-4xl font-bold text-orange mb-4 text-center">Expérience Professionnelle</h2>
+      <p className="text-lg text-gray-400 mb-16 text-center max-w-2xl mx-auto">
+        J'allie expertise technique en **Full Stack/IA** à une solide expérience du service client et du travail d'équipe.
+      </p>
 
-    <div className="relative max-w-5xl mx-auto">
-      {/* Timeline centrale */}
-      <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-orange to-transparent opacity-50"></div>
-
-      {experienceData.map((exp, index) => {
-        const isLeft = index % 2 === 0;
-
-        return (
+      {/* Grille des expériences : 1 colonne sur mobile, 2 colonnes sur desktop avec des tailles différentes */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {experienceData.map((exp, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: index * 0.3 }}
-            className={`relative w-full flex flex-col ${isLeft ? 'lg:flex-row' : 'lg:flex-row-reverse'} mb-20 items-center`}
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, delay: index * 0.2 }}
+            // La carte Freelance (tech) prend 2/3 de la largeur sur desktop
+            className={`rounded-xl p-8 shadow-2xl transition-all duration-300 border 
+                        ${exp.type === 'tech' 
+                           ? 'lg:col-span-2 bg-gray-800 border-orange/50 hover:border-orange'
+                           : 'lg:col-span-1 bg-gray-900 border-gray-700 hover:border-white/50'}`}
           >
-            {/* Cercle timeline avec icône */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 bg-orange rounded-full w-8 h-8 z-10 border-2 border-white flex items-center justify-center shadow-lg">
-              <FaLaptopCode className="text-darkbg w-4 h-4" />
+            {/* Header de la carte */}
+            <div className="flex items-center mb-4 pb-4 border-b border-gray-700">
+                <div className={`p-3 rounded-full mr-4 ${exp.type === 'tech' ? 'bg-orange' : 'bg-gray-700'}`}>
+                    {exp.icon}
+                </div>
+                <div>
+                    <h3 className="text-xl md:text-2xl font-bold text-white">{exp.role}</h3>
+                    <p className="text-orange text-sm font-medium">{exp.company} | {exp.period}</p>
+                </div>
             </div>
 
-            {/* Bloc expérience */}
-            <motion.div
-              whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(255,165,0,0.6)' }}
-              className={`lg:w-1/2 px-6 py-6 bg-gray-900 bg-opacity-20 rounded-xl backdrop-blur-md transition-all duration-300 ${
-                isLeft ? 'text-right lg:pr-20' : 'text-left lg:pl-20'
-              }`}
-            >
-              <h3 className="text-3xl font-semibold text-orange mb-1">{exp.role}</h3>
-              <p className="text-gray-300 mb-1 italic">{exp.company}</p>
-              <span className="text-gray-500 text-sm mb-3 block">{exp.period}</span>
-              <ul className="list-disc list-inside text-gray-300 space-y-2">
-                {exp.description.map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </motion.div>
+            {/* Détails de l'expérience */}
+            <ul className="text-gray-300 space-y-3">
+              {exp.description.map((item, i) => (
+                <li key={i} className="flex items-start">
+                  <MdOutlineWork className="text-orange flex-shrink-0 mt-1 mr-3" />
+                  <p className="text-base">{item}</p>
+                </li>
+              ))}
+            </ul>
           </motion.div>
-        );
-      })}
+        ))}
+      </div>
     </div>
   </section>
 );
