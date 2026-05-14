@@ -4,18 +4,40 @@ import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react
 
 const Contact = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', message: '' });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Point de départ pour intégration Formspree ou Resend
-    const mailto = `mailto:rtonfo@gmail.com?subject=Contact depuis portfolio - ${form.name}&body=${encodeURIComponent(form.message)}%0A%0AEmail: ${form.email}`;
-    window.location.href = mailto;
-    setSubmitted(true);
+    setLoading(true);
+
+    try {
+      const response = await fetch('https://formspree.io/f/mrejvywy', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        setForm({ name: '', email: '', message: '' });
+        setTimeout(() => setSubmitted(false), 5000);
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -190,9 +212,10 @@ const Contact = () => {
 
                 <button
                   type="submit"
-                  className="mt-2 w-full py-4 bg-[#F97316] text-[#0a0a0f] font-bold text-sm tracking-wide rounded-lg hover:bg-[#fb923c] transition-all shadow-lg shadow-[#F97316]/20 hover:shadow-[#F97316]/40"
+                  disabled={loading}
+                  className="mt-2 w-full py-4 bg-[#F97316] text-[#0a0a0f] font-bold text-sm tracking-wide rounded-lg hover:bg-[#fb923c] disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-[#F97316]/20 hover:shadow-[#F97316]/40"
                 >
-                  Envoyer le message →
+                  {loading ? 'Envoi en cours...' : 'Envoyer le message →'}
                 </button>
 
                 <p className="text-white/25 text-xs text-center">
