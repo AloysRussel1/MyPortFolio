@@ -1,4 +1,5 @@
 import React from "react";
+import GoogleAnalytics from "./components/GoogleAnalytics";
 import NavBar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Skills from "./components/Skills";
@@ -11,6 +12,7 @@ import Footer from "./components/Footer";
 const App: React.FC = () => {
   return (
     <div className="font-sans text-gray-900">
+      <GoogleAnalytics />
       <NavBar />
       <Hero />
       <Skills />
