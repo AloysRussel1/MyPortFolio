@@ -1,86 +1,104 @@
-//import React from 'react'; // Déjà fait
 import { motion } from 'framer-motion';
-import { FaGraduationCap, FaBrain } from 'react-icons/fa'; // Nouvelles icônes
+import { FaGraduationCap, FaBrain } from 'react-icons/fa';
 
-const educationData = [
+const education = [
   {
-    school: 'Localhost Academy',
-    degree: 'Programme en Intelligence Artificielle et Analyse de Données',
-    year: '2025',
-    icon: <FaBrain className="text-darkbg w-4 h-4" />, // Icône IA pour se démarquer
-    isIA: true,
+    icon: <FaGraduationCap className="w-5 h-5" />,
+    school: 'Polytechnique Montréal',
+    degree: 'Baccalauréat en Génie informatique (B. Ing.)',
+    period: '2024 – En cours',
+    detail: 'Programme de référence en ingénierie logicielle et systèmes. Cours avancés en algorithmique, architecture logicielle, bases de données et développement web.',
+    current: true,
   },
   {
+    icon: <FaBrain className="w-5 h-5" />,
+    school: 'Localhost Academy',
+    degree: 'Programme en Intelligence Artificielle & Analyse de Données',
+    period: '2025',
+    detail: 'Formation intensive axée sur le machine learning, deep learning (TensorFlow, Keras), la science des données (Pandas, NumPy) et la visualisation.',
+    current: false,
+  },
+  {
+    icon: <FaGraduationCap className="w-5 h-5" />,
     school: 'Université de Dschang',
-    degree: 'Baccalauréat en Informatique',
-    year: '2024',
-    details: '(Évaluation comparative des études effectuées hors Québec)', // Pour le tooltip/détail
-    icon: <FaGraduationCap className="text-darkbg w-4 h-4" />,
-    isIA: false,
+    degree: 'Licence en Informatique',
+    period: '2021 – 2024',
+    detail: 'Fondements solides en programmation, réseaux, bases de données et développement logiciel. Évaluation comparative des études effectuées hors Québec.',
+    current: false,
   },
 ];
 
 const Education = () => (
-  <section id="education" className="bg-darkbg text-white py-24 px-6 lg:px-16">
-    <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold text-orange mb-4 text-center">Parcours Académique</h2>
-        <p className="text-lg text-gray-400 mb-16 text-center max-w-2xl mx-auto">
-            Une fondation solide en Informatique, complétée par une expertise ciblée en Intelligence Artificielle et Analyse de Données.
+  <section id="education" className="bg-[#0d0d14] py-28 px-6 lg:px-12">
+    <div className="max-w-7xl mx-auto">
+
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mb-16"
+      >
+        <p className="font-mono text-[#F97316] text-xs tracking-widest uppercase mb-3">
+          — Académique
         </p>
+        <h2 className="text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
+          Formation
+        </h2>
+        <p className="text-white/50 max-w-xl text-base leading-relaxed">
+          Parcours académique ancré dans l'ingénierie logicielle, complété par
+          une spécialisation ciblée en intelligence artificielle.
+        </p>
+      </motion.div>
 
-        <div className="relative">
-            {/* Ligne de la Timeline (Cachée sur mobile, visible sur desktop) */}
-            <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gray-700"></div>
+      <div className="flex flex-col gap-6 max-w-3xl">
+        {education.map((edu, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5, delay: index * 0.12 }}
+            className={`relative flex gap-6 bg-[#0f0f18] rounded-xl p-7 border transition-all duration-500 hover:border-white/12 ${
+              edu.current
+                ? 'border-[#F97316]/30'
+                : 'border-white/6'
+            }`}
+          >
+            {/* Current badge */}
+            {edu.current && (
+              <div className="absolute top-4 right-4">
+                <span className="flex items-center gap-1.5 text-[10px] font-mono text-emerald-400 bg-emerald-400/10 border border-emerald-400/25 px-2.5 py-1 rounded-full">
+                  <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+                  En cours
+                </span>
+              </div>
+            )}
 
-            {/* Ligne de la Timeline (Alignée à gauche sur mobile) */}
-            <div className="lg:hidden absolute left-3 h-full w-0.5 bg-gray-700"></div>
+            {/* Icon */}
+            <div
+              className={`flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center ${
+                edu.current
+                  ? 'bg-[#F97316]/15 border border-[#F97316]/40 text-[#F97316]'
+                  : 'bg-white/5 border border-white/10 text-white/50'
+              }`}
+            >
+              {edu.icon}
+            </div>
 
-            {educationData.map((edu, index) => {
-                const isLeft = index % 2 === 0;
-
-                return (
-                <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: isLeft ? -100 : 100 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, amount: 0.2 }}
-                    transition={{ duration: 0.8, delay: index * 0.2 }}
-                    // Structure pour l'alternance desktop et l'alignement à gauche mobile
-                    className={`relative flex mb-12 items-start lg:items-center ${isLeft ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}
-                >
-                    {/* Le Cercle de Marqueur (Positionnement Absolu pour l'alignement) */}
-                    <div className={`absolute lg:relative flex-shrink-0 z-10 
-                        ${isLeft ? 'left-0 lg:left-auto lg:order-2' : 'left-0 lg:left-auto lg:order-2'} 
-                        lg:transform lg:translate-x-0 ml-0 lg:ml-0 
-                        w-6 h-6 rounded-full border-4 border-darkbg flex items-center justify-center 
-                        ${edu.isIA ? 'bg-orange shadow-orange-glow' : 'bg-gray-500'}`} // Style pour l'IA
-                        style={isLeft ? { left: '2px' } : { left: '2px' }} // Aligné à 2px à gauche sur mobile
-                    >
-                        {edu.icon}
-                    </div>
-
-                    {/* Contenu de la Formation */}
-                    <div className={`lg:w-1/2 p-6 rounded-xl bg-gray-800 transition-all duration-300 shadow-xl ml-10 lg:ml-0 
-                        ${isLeft ? 'lg:order-1 lg:text-right lg:pr-12' : 'lg:order-3 lg:text-left lg:pl-12'}`}
-                        // Le hover est plus subtil ici
-                        onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 15px rgba(255,165,0,0.5)'}
-                        onMouseLeave={e => e.currentTarget.style.boxShadow = '0 0 0 transparent'}
-                    >
-                        <p className={`text-sm font-semibold mb-1 ${edu.isIA ? 'text-orange' : 'text-gray-400'}`}>
-                            {edu.school} - {edu.year}
-                        </p>
-                        <h3 className="text-xl md:text-2xl font-bold text-white mb-1">{edu.degree}</h3>
-                        {edu.details && (
-                             <p className="text-gray-500 text-sm italic mt-1">{edu.details}</p>
-                        )}
-                    </div>
-                    
-                    {/* Espace vide pour l'alternance desktop */}
-                    <div className="hidden lg:block lg:w-1/2"></div>
-                </motion.div>
-                );
-            })}
-        </div>
+            {/* Content */}
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-wrap items-start gap-x-4 gap-y-1 mb-2">
+                <h3 className="text-base font-bold text-white">{edu.school}</h3>
+                <span className="font-mono text-xs text-white/40 mt-0.5">{edu.period}</span>
+              </div>
+              <p className="text-[#F97316]/80 text-sm font-medium mb-2">{edu.degree}</p>
+              <p className="text-white/40 text-sm leading-relaxed">{edu.detail}</p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
     </div>
   </section>
 );

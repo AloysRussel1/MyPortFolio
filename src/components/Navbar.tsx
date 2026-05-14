@@ -1,126 +1,125 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
-// Import pour l'option de langue
-import { FaGlobe } from 'react-icons/fa'; 
 
-// Structure de données des liens (inchangée)
 const navLinks = [
   { name: 'Accueil', href: '#hero' },
   { name: 'Projets', href: '#projects' },
   { name: 'Compétences', href: '#skills' },
   { name: 'Expérience', href: '#experience' },
-  { name: 'Éducation', href: '#education' },
+  { name: 'Formation', href: '#education' },
   { name: 'Contact', href: '#contact' },
 ];
 
-const NavBar = () => {
+const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [language, setLanguage] = useState('FR'); // État pour simuler la langue
-  
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-  const handleLinkClick = () => setMenuOpen(false); 
-  
-  // Fonction de bascule de langue (pour l'implémentation future)
-  const toggleLanguage = () => {
-    setLanguage(language === 'FR' ? 'EN' : 'FR');
-    // Ici, vous implémenteriez la logique de changement de langue
-  };
+  const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 20);
+      const sections = navLinks.map(l => l.href.replace('#', ''));
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i]);
+        if (el && window.scrollY >= el.offsetTop - 120) {
+          setActiveSection(sections[i]);
+          break;
+        }
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
-    <nav className="fixed w-full z-50 bg-gray-900 bg-opacity-95 backdrop-blur-sm shadow-xl border-b border-orange/50">
-      <div className="max-w-7xl mx-auto px-6 lg:px-16 py-2 lg:py-4 flex justify-between items-center">
-        
-        
-        {/* Logo/Marque : Lien vers l'accueil */}
-        <a 
-          href="#hero" 
-          className="text-white font-extrabold text-2xl md:text-3xl tracking-wide hover:text-orange transition-colors"
-          onClick={handleLinkClick}
+    <nav
+      className={`fixed w-full z-50 transition-all duration-500 ${
+        scrolled
+          ? 'bg-[#0a0a0f]/95 backdrop-blur-md shadow-[0_1px_0_rgba(255,255,255,0.06)]'
+          : 'bg-transparent'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 h-16 flex items-center justify-between">
+        {/* Logo */}
+        <a
+          href="#hero"
+          className="font-mono text-sm font-semibold tracking-widest text-white/90 hover:text-[#F97316] transition-colors"
+          onClick={() => setMenuOpen(false)}
         >
-          Aloys Russel <span className="text-orange">TONFO</span>
+          AR<span className="text-[#F97316]">.</span>TONFO
         </a>
 
-        {/* Menu desktop (inchangé) */}
-        <ul className="hidden lg:flex space-x-8 text-gray-300 font-medium uppercase text-sm tracking-wider items-center">
-          {navLinks.map((link) => (
-            <li
-              key={link.name}
-              className="relative group hover:text-orange transition-colors"
+        {/* Desktop links */}
+        <ul className="hidden lg:flex items-center gap-8">
+          {navLinks.map(link => {
+            const id = link.href.replace('#', '');
+            const isActive = activeSection === id;
+            return (
+              <li key={link.name}>
+                <a
+                  href={link.href}
+                  className={`text-xs tracking-widest uppercase font-medium transition-all duration-300 pb-0.5 border-b ${
+                    isActive
+                      ? 'text-[#F97316] border-[#F97316]'
+                      : 'text-white/60 border-transparent hover:text-white hover:border-white/30'
+                  }`}
+                >
+                  {link.name}
+                </a>
+              </li>
+            );
+          })}
+          <li>
+            <a
+              href="#contact"
+              className="ml-2 px-4 py-2 text-xs tracking-widest uppercase font-semibold bg-[#F97316] text-[#0a0a0f] rounded hover:bg-[#fb923c] transition-colors"
             >
-              <a href={link.href} className="py-2 block">
-                {link.name}
-              </a>
-              <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-orange transition-all duration-300 group-hover:w-full"></span>
-            </li>
-          ))}
-          
-          {/* SÉLECTEUR DE LANGUE (BILINGUE - CREATIF) */}
-          <li className="ml-6">
-            <button 
-              onClick={toggleLanguage} 
-              className="flex items-center space-x-2 border border-orange text-orange px-3 py-1 rounded-full font-semibold hover:bg-orange hover:text-gray-900 transition-all text-xs"
-              title="Passer en Anglais / Français"
-            >
-              <FaGlobe className="w-3 h-3"/>
-              <span className="font-bold">{language === 'FR' ? 'EN' : 'FR'}</span>
-            </button>
+              Embauchez-moi
+            </a>
           </li>
         </ul>
 
-        {/* Burger mobile (Visible en dessous de lg) */}
-        <div className="lg:hidden text-white" onClick={toggleMenu}>
-          {menuOpen ? <FaTimes size={28} /> : <FaBars size={28} />}
-        </div>
+        {/* Mobile burger */}
+        <button
+          className="lg:hidden text-white/80 hover:text-white"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Menu"
+        >
+          {menuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
+        </button>
       </div>
 
-      {/* Menu mobile dépliant */}
-      {/* LIGNE CORRIGÉE : Utilisation de transition-all, ajout de l'opacité et de pointer-events-none à l'état fermé */}
-      <ul 
-        className={`
-            lg:hidden 
-            bg-gray-900 
-            w-full 
-            text-center 
-            py-6 
-            space-y-4 
-            font-medium 
-            text-white 
-            uppercase 
-            transition-all 
-            duration-500 
-            ease-in-out 
-            overflow-hidden 
-            ${
-                menuOpen 
-                ? 'max-h-screen border-t border-gray-700 opacity-100 pointer-events-auto' 
-                : 'max-h-0 opacity-0 pointer-events-none'
-            }
-        `}
+      {/* Mobile menu */}
+      <div
+        className={`lg:hidden transition-all duration-400 overflow-hidden ${
+          menuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+        } bg-[#0d0d14] border-t border-white/5`}
       >
-        {navLinks.map((link) => (
-          <li 
-            key={link.name} 
-            className="hover:text-orange transition-colors cursor-pointer text-base"
-          >
-            <a href={link.href} onClick={handleLinkClick} className="py-2 block">
-              {link.name}
+        <ul className="flex flex-col py-6 px-6 gap-1">
+          {navLinks.map(link => (
+            <li key={link.name}>
+              <a
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className="block py-3 text-sm text-white/70 hover:text-[#F97316] tracking-widest uppercase border-b border-white/5 transition-colors"
+              >
+                {link.name}
+              </a>
+            </li>
+          ))}
+          <li className="pt-4">
+            <a
+              href="#contact"
+              onClick={() => setMenuOpen(false)}
+              className="block text-center py-3 text-xs tracking-widest uppercase font-semibold bg-[#F97316] text-[#0a0a0f] rounded hover:bg-[#fb923c] transition-colors"
+            >
+              Embauchez-moi
             </a>
           </li>
-        ))}
-        
-        {/* SÉLECTEUR DE LANGUE MOBILE */}
-        <li className="pt-4">
-          <button
-            onClick={toggleLanguage}
-            className="flex items-center space-x-3 border border-orange text-orange px-6 py-3 rounded-full font-bold hover:bg-orange hover:text-gray-900 transition-all text-sm max-w-xs mx-auto justify-center"
-          >
-            <FaGlobe className="w-4 h-4"/>
-            <span>BASCULER VERS L'{language === 'FR' ? 'ANGLAIS (EN)' : 'FRANÇAIS (FR)'}</span>
-          </button>
-        </li>
-      </ul>
+        </ul>
+      </div>
     </nav>
   );
 };
 
-export default NavBar;
+export default Navbar;

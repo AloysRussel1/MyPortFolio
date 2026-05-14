@@ -1,126 +1,204 @@
-//import React from 'react'; // Déjà fait
 import { motion } from 'framer-motion';
-// J'ai besoin de vos images ou de placeholders pour l'exemple
-import projectImg1 from '../assets/projet1.png'; 
+import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import projectImg1 from '../assets/projet1.png';
 import projectImg2 from '../assets/projet2.png';
-//import projectImg3 from '../assets/projet3.png';
 import projectImg4 from '../assets/ai_school.jpg';
 import projectImg5 from '../assets/ai_school.jpg';
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 
-// --- Données de Projet ENRICHIES ---
 const projects = [
   {
     id: 1,
-    title: 'Plateforme Gestion Collaborative',
-    description: 'Développement Full Stack d’une plateforme de gestion de tâches avec mise à jour en temps réel. Fonctionnalités incluant authentification sécurisée et gestion des rôles utilisateurs.',
+    category: 'Full Stack · Temps Réel',
+    title: 'Plateforme de gestion collaborative',
+    description:
+      'Application web complète de gestion de tâches avec mises à jour en temps réel via WebSockets, authentification sécurisée JWT et gestion des rôles utilisateurs. Architecture découplée React / Django REST.',
     image: projectImg1,
     github: 'https://github.com/AloysRussel1/project1',
     live: '#',
-    stack: ['React', 'Django', 'PostgreSQL', 'API REST', 'WebSockets'],
-    role: 'Application Full Stack Temps Réel',
+    stack: ['React', 'Django', 'PostgreSQL', 'REST API', 'WebSockets', 'JWT'],
+    featured: true,
   },
   {
     id: 2,
-    title: 'Prédiction Prix Agricoles (IA)',
-    description: 'Conception et déploiement d’un service web pour prédire l’évolution des prix des denrées. Modèle d’apprentissage supervisé intégré via Flask, assurant une prise de décision éclairée.',
+    category: 'Intelligence Artificielle · Python',
+    title: 'Prédiction des prix agricoles',
+    description:
+      "Service web de prédiction de l'évolution des prix des denrées alimentaires. Modèle supervisé (Scikit-learn / TensorFlow) exposé via une API Flask, avec tableau de bord de visualisation Pandas.",
     image: projectImg2,
     github: 'https://github.com/AloysRussel1/project2',
     live: '#',
     stack: ['Flask', 'TensorFlow', 'Scikit-learn', 'Pandas', 'Python'],
-    role: 'Intégration d’un Modèle d’IA Déployé',
+    featured: true,
   },
   {
-    id: 4,
-    title: 'Gestion d’un Établissement (SaaS)',
-    description: 'Système robuste pour la gestion des emplois du temps, des membres, et des événements. Orienté SaaS (Software as a Service) pour une architecture évolutive multi-clients.',
+    id: 3,
+    category: 'SaaS · Backend',
+    title: "Système de gestion d'établissement",
+    description:
+      'Plateforme SaaS pour la gestion des emplois du temps, membres et événements. Architecture modulaire multi-clients avec Django, MySQL et Bootstrap.',
     image: projectImg4,
     github: 'https://github.com/AloysRussel1/project4',
     live: '#',
-    stack: ['Django', 'Python', 'MySQL', 'Bootstrap', 'Agile'],
-    role: 'Système de Gestion Modulaire',
+    stack: ['Django', 'MySQL', 'Bootstrap', 'Python'],
+    featured: false,
   },
   {
-    id: 5,
-    title: 'Plateforme Immobilière - Admin',
-    description: 'Tableau de bord d’administration complet pour les agents immobiliers : gestion des biens, analyse des statistiques, et administration des comptes utilisateurs.',
+    id: 4,
+    category: 'Frontend · UX/UI',
+    title: 'Dashboard admin immobilier',
+    description:
+      "Tableau de bord d'administration pour agents immobiliers : gestion des biens, statistiques analytiques et administration des comptes. Interface React entièrement responsive.",
     image: projectImg5,
     github: 'https://github.com/AloysRussel1/project5',
     live: '#',
-    stack: ['React', 'API REST', 'Axios', 'Tailwind CSS', 'UX/UI'],
-    role: 'Frontend d’Administration (UX/UI)',
-  }
+    stack: ['React', 'Axios', 'Tailwind CSS', 'REST API'],
+    featured: false,
+  },
 ];
 
 const Projects = () => (
-  <section className="min-h-screen px-6 lg:px-16 py-24 bg-darkbg text-white" id="projects">
+  <section id="projects" className="bg-[#0a0a0f] py-28 px-6 lg:px-12">
     <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-orange mb-4 text-center">Mes Réalisations</h2>
-        <p className="text-lg text-gray-400 mb-16 text-center max-w-2xl mx-auto">
-            Démonstration concrète de l'alliance entre le développement **Full Stack** et l'**Intelligence Artificielle**.
+
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mb-16"
+      >
+        <p className="font-mono text-[#F97316] text-xs tracking-widest uppercase mb-3">
+          — Réalisations
         </p>
+        <h2 className="text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
+          Mes projets
+        </h2>
+        <p className="text-white/50 max-w-xl text-base leading-relaxed">
+          Des applications concrètes alliant développement Full Stack et intégration IA,
+          conçues pour résoudre de vrais problèmes.
+        </p>
+      </motion.div>
 
-        {/* Grille de 2 colonnes sur desktop pour une meilleure visibilité des cartes détaillées */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12"> 
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ delay: index * 0.2, duration: 0.8 }}
-              className="bg-gray-800 rounded-xl shadow-2xl overflow-hidden border border-gray-700 hover:border-orange transition-all duration-300 group"
-            >
-              {/* Image avec effet de zoom subtil */}
-              <div className="overflow-hidden h-64">
-                  <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
-                  />
+      {/* Featured projects — large */}
+      <div className="grid lg:grid-cols-2 gap-6 mb-6">
+        {projects.filter(p => p.featured).map((project, index) => (
+          <motion.article
+            key={project.id}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, delay: index * 0.15 }}
+            className="group relative bg-[#0f0f18] border border-white/6 rounded-xl overflow-hidden hover:border-[#F97316]/40 transition-all duration-500"
+          >
+            {/* Image */}
+            <div className="overflow-hidden h-56">
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-[1.03] transition-all duration-700"
+              />
+            </div>
+
+            {/* Content */}
+            <div className="p-7">
+              <p className="font-mono text-[#F97316] text-[11px] tracking-widest uppercase mb-2">
+                {project.category}
+              </p>
+              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#F97316] transition-colors">
+                {project.title}
+              </h3>
+              <p className="text-white/50 text-sm leading-relaxed mb-5">
+                {project.description}
+              </p>
+
+              {/* Stack */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                {project.stack.map(tech => (
+                  <span
+                    key={tech}
+                    className="px-2.5 py-1 text-[11px] font-mono text-[#F97316]/80 bg-[#F97316]/8 border border-[#F97316]/20 rounded"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
 
-              {/* Contenu de la carte */}
-              <div className="p-6">
-                  <span className="text-sm font-semibold text-orange block mb-2">{project.role}</span>
-                  <h3 className="text-2xl font-bold mb-3 text-white">{project.title}</h3>
-                  
-                  <p className="text-gray-300 mb-4 text-base leading-relaxed">{project.description}</p>
-                  
-                  {/* Stack Technique (Badges) */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                      {project.stack.map(tech => (
-                          <span key={tech} className="px-3 py-1 text-xs font-medium bg-gray-900 text-orange rounded-full border border-orange/50">
-                              {tech}
-                          </span>
-                      ))}
-                  </div>
-
-                  {/* Boutons d'accès */}
-                  <div className="flex space-x-4">
-                      <a 
-                          href={project.live} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="flex items-center space-x-2 px-4 py-2 bg-orange text-darkbg rounded-full font-semibold hover:bg-lightOrange transition-colors"
-                      >
-                          <FaExternalLinkAlt />
-                          <span>Voir le Live</span>
-                      </a>
-                      <a 
-                          href={project.github} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="flex items-center space-x-2 px-4 py-2 border border-orange text-orange rounded-full hover:bg-orange hover:text-darkbg transition-colors"
-                      >
-                          <FaGithub />
-                          <span>Code Source</span>
-                      </a>
-                  </div>
+              {/* Links */}
+              <div className="flex gap-4">
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-white/60 text-sm hover:text-white transition-colors"
+                >
+                  <FaGithub size={15} /> Code source
+                </a>
+                <a
+                  href={project.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-white/60 text-sm hover:text-[#F97316] transition-colors"
+                >
+                  <FaExternalLinkAlt size={13} /> Démo live
+                </a>
               </div>
-            </motion.div>
-          ))}
-        </div>
+            </div>
+          </motion.article>
+        ))}
+      </div>
+
+      {/* Other projects — compact */}
+      <div className="grid md:grid-cols-2 gap-6">
+        {projects.filter(p => !p.featured).map((project, index) => (
+          <motion.article
+            key={project.id}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="group bg-[#0f0f18] border border-white/6 rounded-xl p-6 hover:border-[#F97316]/30 transition-all duration-500"
+          >
+            <p className="font-mono text-[#F97316]/70 text-[11px] tracking-widest uppercase mb-2">
+              {project.category}
+            </p>
+            <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#F97316] transition-colors">
+              {project.title}
+            </h3>
+            <p className="text-white/40 text-sm leading-relaxed mb-4">
+              {project.description}
+            </p>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {project.stack.map(tech => (
+                <span
+                  key={tech}
+                  className="px-2 py-0.5 text-[10px] font-mono text-[#F97316]/70 bg-[#F97316]/6 border border-[#F97316]/15 rounded"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+            <div className="flex gap-4">
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-white/50 text-xs hover:text-white transition-colors"
+              >
+                <FaGithub size={13} /> GitHub
+              </a>
+              <a
+                href={project.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-white/50 text-xs hover:text-[#F97316] transition-colors"
+              >
+                <FaExternalLinkAlt size={11} /> Live
+              </a>
+            </div>
+          </motion.article>
+        ))}
+      </div>
     </div>
   </section>
 );

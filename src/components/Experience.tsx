@@ -1,85 +1,135 @@
-//import React from 'react'; // Déjà fait
 import { motion } from 'framer-motion';
-import { FaLaptopCode, FaHandshake } from 'react-icons/fa'; // Nouvelles icônes
-import { MdOutlineWork } from 'react-icons/md';
+import { FaCode, FaUtensils } from 'react-icons/fa';
 
-const experienceData = [
+const experiences = [
   {
-    role: 'Développeur Full Stack – Freelance',
-    company: 'Projets Indépendants',
-    period: '2022 – Présent',
+    id: 1,
     type: 'tech',
-    icon: <FaLaptopCode className="text-orange w-6 h-6" />,
-    description: [
-      // Accent mis sur le Full Stack et les technologies spécifiques
-      'Pilotage complet du cycle de développement d’applications web en React et Python (Django/Flask).',
-      // Accent mis sur la sécurité et l'IA
-      'Conception d’**API REST sécurisées** (tokenisation, validation), et optimisation de l’UX/UI.',
-      '**Intégration d’algorithmes d’IA** (TensorFlow, Scikit-learn) pour automatiser et optimiser les fonctionnalités clés.',
-      'Gestion du déploiement (notions Docker/AWS) et maintenance technique des solutions produites.',
+    icon: <FaCode className="w-5 h-5" />,
+    role: 'Développeur Full Stack',
+    company: 'Projets Freelance',
+    location: 'Remote',
+    period: '2022 – Présent',
+    bullets: [
+      "Développement complet d'applications web avec React (frontend) et Python Django/Flask (backend), incluant API REST, authentification JWT et gestion des rôles.",
+      "Intégration de modèles d'apprentissage automatique (TensorFlow, Scikit-learn) dans des services web Python pour l'automatisation et la prédiction.",
+      'Gestion du cycle de vie complet : conception, développement, tests unitaires, déploiement (Docker/AWS) et maintenance.',
     ],
+    tags: ['React', 'Django', 'Flask', 'Python', 'REST API', 'TensorFlow'],
   },
   {
-    role: 'Équipier Polyvalent', // Plus professionnel que "Équipier" seul
-    company: 'McDonald’s, Sainte-Agathe-des-Monts, QC',
-    period: '2025 – Présent',
+    id: 2,
     type: 'soft',
-    icon: <FaHandshake className="text-white w-6 h-6" />,
-    description: [
-      // Accent mis sur les soft skills et l'intégration
-      'Fournir un service client rapide et courtois dans un environnement bilingue et sous pression.',
-      'Maintenir l’efficacité opérationnelle et la satisfaction client (taux de fidélité élevé).',
-      'Collaboration efficace avec une équipe multiculturelle selon les principes de l’**Agile** (adaptabilité, communication).',
+    icon: <FaUtensils className="w-5 h-5" />,
+    role: 'Équipier polyvalent',
+    company: 'McDonald\'s',
+    location: 'Sainte-Agathe-des-Monts, QC',
+    period: '2025 – Présent',
+    bullets: [
+      'Service client rapide et courtois dans un environnement bilingue (FR/EN) à fort volume, gérant la caisse et la préparation des commandes.',
+      "Respect strict des standards d'hygiène alimentaire et maintien de la propreté des espaces de travail.",
+      'Collaboration en équipe multiculturelle avec adaptabilité et communication efficace en période de pointe.',
     ],
+    tags: ["Service client", "Bilingue FR/EN", "Travail d'équipe", "Gestion pression"],
   },
+  
 ];
 
 const Experience = () => (
-  <section id="experience" className="bg-darkbg text-white py-24 px-6 lg:px-16">
-    <div className="max-w-6xl mx-auto">
-      <h2 className="text-4xl font-bold text-orange mb-4 text-center">Expérience Professionnelle</h2>
-      <p className="text-lg text-gray-400 mb-16 text-center max-w-2xl mx-auto">
-        J'allie expertise technique en **Full Stack/IA** à une solide expérience du service client et du travail d'équipe.
-      </p>
+  <section id="experience" className="bg-[#0a0a0f] py-28 px-6 lg:px-12">
+    <div className="max-w-7xl mx-auto">
 
-      {/* Grille des expériences : 1 colonne sur mobile, 2 colonnes sur desktop avec des tailles différentes */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {experienceData.map((exp, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, delay: index * 0.2 }}
-            // La carte Freelance (tech) prend 2/3 de la largeur sur desktop
-            className={`rounded-xl p-8 shadow-2xl transition-all duration-300 border 
-                        ${exp.type === 'tech' 
-                           ? 'lg:col-span-2 bg-gray-800 border-orange/50 hover:border-orange'
-                           : 'lg:col-span-1 bg-gray-900 border-gray-700 hover:border-white/50'}`}
-          >
-            {/* Header de la carte */}
-            <div className="flex items-center mb-4 pb-4 border-b border-gray-700">
-                <div className={`p-3 rounded-full mr-4 ${exp.type === 'tech' ? 'bg-orange' : 'bg-gray-700'}`}>
-                    {exp.icon}
-                </div>
-                <div>
-                    <h3 className="text-xl md:text-2xl font-bold text-white">{exp.role}</h3>
-                    <p className="text-orange text-sm font-medium">{exp.company} | {exp.period}</p>
-                </div>
-            </div>
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mb-16"
+      >
+        <p className="font-mono text-[#F97316] text-xs tracking-widest uppercase mb-3">
+          — Parcours
+        </p>
+        <h2 className="text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
+          Expérience professionnelle
+        </h2>
+        <p className="text-white/50 max-w-xl text-base leading-relaxed">
+          Une combinaison d'expertise technique en développement et d'expériences terrain
+          qui forgent la rigueur, l'adaptabilité et l'esprit d'équipe.
+        </p>
+      </motion.div>
 
-            {/* Détails de l'expérience */}
-            <ul className="text-gray-300 space-y-3">
-              {exp.description.map((item, i) => (
-                <li key={i} className="flex items-start">
-                  <MdOutlineWork className="text-orange flex-shrink-0 mt-1 mr-3" />
-                  <p className="text-base">{item}</p>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        ))}
+      {/* Timeline */}
+      <div className="relative">
+        {/* Vertical line */}
+        <div className="absolute left-[19px] lg:left-[23px] top-0 bottom-0 w-px bg-white/8" />
+
+        <div className="flex flex-col gap-10">
+          {experiences.map((exp, index) => (
+            <motion.div
+              key={exp.id}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, delay: index * 0.15 }}
+              className="relative pl-14 lg:pl-16"
+            >
+              {/* Timeline dot */}
+              <div
+                className={`absolute left-0 top-1 w-10 h-10 rounded-full flex items-center justify-center z-10 border ${
+                  exp.type === 'tech'
+                    ? 'bg-[#F97316]/15 border-[#F97316]/40 text-[#F97316]'
+                    : 'bg-white/5 border-white/15 text-white/50'
+                }`}
+              >
+                {exp.icon}
+              </div>
+
+              {/* Card */}
+              <div
+                className={`bg-[#0f0f18] rounded-xl border p-7 hover:border-white/12 transition-all duration-500 ${
+                  exp.type === 'tech' ? 'border-[#F97316]/20' : 'border-white/6'
+                }`}
+              >
+                {/* Header */}
+                <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
+                  <div>
+                    <h3 className="text-lg font-bold text-white">{exp.role}</h3>
+                    <p className="text-[#F97316] text-sm font-medium mt-0.5">
+                      {exp.company}
+                    </p>
+                    <p className="text-white/40 text-xs mt-0.5 font-mono">{exp.location}</p>
+                  </div>
+                  <span className="font-mono text-xs text-white/40 bg-white/5 border border-white/8 rounded px-3 py-1.5 flex-shrink-0">
+                    {exp.period}
+                  </span>
+                </div>
+
+                {/* Bullets */}
+                <ul className="flex flex-col gap-2.5 mb-5">
+                  {exp.bullets.map((b, i) => (
+                    <li key={i} className="flex gap-3 text-sm text-white/60 leading-relaxed">
+                      <span className="text-[#F97316]/60 mt-1 flex-shrink-0">›</span>
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2">
+                  {exp.tags.map(tag => (
+                    <span
+                      key={tag}
+                      className="text-[10px] font-mono px-2.5 py-1 rounded bg-white/5 text-white/40 border border-white/8"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   </section>

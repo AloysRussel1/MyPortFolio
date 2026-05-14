@@ -1,71 +1,163 @@
-//import React from 'react'; // 
 import { motion } from 'framer-motion';
-import { FaLaptopCode, FaPython, FaBrain, FaCloud,  } from 'react-icons/fa'; // Nouvelles icônes plus spécifiques
 
 const skillCategories = [
   {
-    name: 'Front-End & UI/UX',
-    icon: <FaLaptopCode className="text-orange text-3xl" />, // Icône plus moderne
-    // Mettre en avant les frameworks phares
-    skills: ['React', 'JavaScript', 'HTML5', 'CSS3', 'Tailwind CSS', 'Bootstrap'],
+    label: '01',
+    name: 'Frontend',
+    description: 'Interfaces réactives et expériences utilisateur modernes',
+    skills: [
+      { name: 'React', level: 'Avancé' },
+      { name: 'TypeScript', level: 'Intermédiaire' },
+      { name: 'JavaScript ES6+', level: 'Avancé' },
+      { name: 'HTML5 / CSS3', level: 'Avancé' },
+      { name: 'Tailwind CSS', level: 'Avancé' },
+      { name: 'Framer Motion', level: 'Intermédiaire' },
+    ],
+    accent: '#F97316',
   },
   {
-    name: 'Back-End & API',
-    icon: <FaPython className="text-orange text-3xl" />, // Mettre Python en évidence
-    // Mettre l'accent sur Python et ses frameworks
-    skills: ['Python', 'Django', 'Flask', 'API REST (Création & Sécurisation)', 'Tests Unitaires'],
+    label: '02',
+    name: 'Backend & API',
+    description: 'Serveurs robustes et APIs RESTful sécurisées',
+    skills: [
+      { name: 'Python', level: 'Avancé' },
+      { name: 'Django', level: 'Avancé' },
+      { name: 'Flask', level: 'Intermédiaire' },
+      { name: 'REST API', level: 'Avancé' },
+      { name: 'JWT / Auth', level: 'Intermédiaire' },
+      { name: 'Tests Unitaires', level: 'Intermédiaire' },
+    ],
+    accent: '#22d3ee',
   },
   {
-    name: 'Data Science & IA',
-    icon: <FaBrain className="text-orange text-3xl" />,
-    // Cœur de votre expertise Data
-    skills: ['TensorFlow', 'Scikit-learn', 'Pandas', 'NumPy', 'Matplotlib', 'Analyse de Données'],
+    label: '03',
+    name: 'Data & IA',
+    description: 'Modèles prédictifs et analyse de données',
+    skills: [
+      { name: 'TensorFlow', level: 'Intermédiaire' },
+      { name: 'Scikit-learn', level: 'Intermédiaire' },
+      { name: 'Pandas', level: 'Avancé' },
+      { name: 'NumPy', level: 'Avancé' },
+      { name: 'Matplotlib', level: 'Intermédiaire' },
+      { name: 'Analyse de données', level: 'Avancé' },
+    ],
+    accent: '#a78bfa',
   },
   {
-    name: 'Bases de Données & DevOps',
-    icon: <FaCloud className="text-orange text-3xl" />, // Utilisation d'une icône Cloud
-    // Combiner les éléments d'infrastructure
-    skills: ['PostgreSQL', 'MySQL', 'Git/GitHub', 'Docker (Notions)', 'AWS (Notions)', 'Agile/Scrum'],
+    label: '04',
+    name: 'DevOps & BDD',
+    description: 'Infrastructure, bases de données et collaboration',
+    skills: [
+      { name: 'PostgreSQL', level: 'Intermédiaire' },
+      { name: 'MySQL', level: 'Intermédiaire' },
+      { name: 'Git / GitHub', level: 'Avancé' },
+      { name: 'Docker', level: 'Notions' },
+      { name: 'AWS', level: 'Notions' },
+      { name: 'Agile / Scrum', level: 'Intermédiaire' },
+    ],
+    accent: '#34d399',
   },
 ];
 
-const Skills = () => (
-  <section className="bg-darkbg text-white px-6 lg:px-16 py-24" id="skills">
-    <div className="max-w-6xl mx-auto">
-      <h2 className="text-4xl font-bold text-orange mb-4 text-center">Compétences Techniques</h2>
-      <p className="text-lg text-gray-400 mb-16 text-center max-w-2xl mx-auto">
-        Maîtrise du cycle de vie complet d'une application, de la conception Full Stack à l'intégration de modèles d'Intelligence Artificielle.
-      </p>
+const levelColor: Record<string, string> = {
+  Avancé: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/25',
+  Intermédiaire: 'text-amber-400 bg-amber-400/10 border-amber-400/25',
+  Notions: 'text-white/40 bg-white/5 border-white/10',
+};
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-        {skillCategories.map((category, index) => (
+const Skills = () => (
+  <section id="skills" className="bg-[#0d0d14] py-28 px-6 lg:px-12">
+    <div className="max-w-7xl mx-auto">
+
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mb-16"
+      >
+        <p className="font-mono text-[#F97316] text-xs tracking-widest uppercase mb-3">
+          — Stack technique
+        </p>
+        <h2 className="text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
+          Compétences
+        </h2>
+        <p className="text-white/50 max-w-xl text-base leading-relaxed">
+          Maîtrise du cycle complet d'une application web, du pixel à la base de données,
+          avec une couche IA sur les projets data.
+        </p>
+      </motion.div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        {skillCategories.map((cat, index) => (
           <motion.div
-            key={category.name}
-            initial={{ opacity: 0, y: 30 }}
+            key={cat.name}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ delay: index * 0.15, duration: 0.6 }}
-            className="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-orange transition-all duration-300 shadow-xl"
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="bg-[#0f0f18] border border-white/6 rounded-xl p-7 hover:border-white/12 transition-all duration-500 group"
           >
-            <div className="flex items-center mb-6 space-x-4">
-              {category.icon}
-              <h3 className="text-xl md:text-2xl font-bold text-white">{category.name}</h3>
-            </div>
-            
-            {/* Affichage des compétences sous forme de badges pour une meilleure lisibilité */}
-            <div className="flex flex-wrap gap-3">
-              {category.skills.map((skill) => (
+            {/* Card header */}
+            <div className="flex items-start justify-between mb-5">
+              <div>
+                <p className="font-mono text-white/20 text-xs tracking-widest mb-1">
+                  {cat.label}
+                </p>
+                <h3 className="text-xl font-bold text-white group-hover:text-[#F97316] transition-colors">
+                  {cat.name}
+                </h3>
+                <p className="text-white/40 text-xs mt-1">{cat.description}</p>
+              </div>
+              <span
+                className="w-8 h-8 rounded-full flex-shrink-0 mt-1"
+                style={{ backgroundColor: cat.accent + '20', border: `1px solid ${cat.accent}40` }}
+              >
                 <span
-                  key={skill}
-                  className="px-4 py-1.5 bg-gray-900 text-sm font-medium text-orange rounded-full border border-orange/50 shadow-md"
-                >
-                  {skill}
-                </span>
+                  className="block w-2 h-2 rounded-full m-auto mt-2.5"
+                  style={{ backgroundColor: cat.accent }}
+                />
+              </span>
+            </div>
+
+            {/* Skills list */}
+            <div className="flex flex-col gap-2.5">
+              {cat.skills.map(skill => (
+                <div key={skill.name} className="flex items-center justify-between">
+                  <span className="text-sm text-white/70 font-medium">{skill.name}</span>
+                  <span
+                    className={`text-[10px] font-mono px-2 py-0.5 rounded border ${levelColor[skill.level]}`}
+                  >
+                    {skill.level}
+                  </span>
+                </div>
               ))}
             </div>
           </motion.div>
         ))}
       </div>
+
+      {/* Bottom extras */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="mt-8 p-6 bg-[#0f0f18] border border-white/6 rounded-xl flex flex-wrap gap-3 items-center"
+      >
+        <span className="text-white/40 text-xs font-mono uppercase tracking-widest mr-2">
+          Aussi:
+        </span>
+        {['Bilingue FR/EN', 'Travail en équipe', 'Agile', 'Communication client', 'Résolution de problèmes'].map(soft => (
+          <span
+            key={soft}
+            className="px-3 py-1 text-xs text-white/60 bg-white/5 border border-white/8 rounded-full"
+          >
+            {soft}
+          </span>
+        ))}
+      </motion.div>
     </div>
   </section>
 );

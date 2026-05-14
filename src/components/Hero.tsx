@@ -1,109 +1,177 @@
-//import React from 'react'; // Déjà fait
 import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaReact, FaPython } from 'react-icons/fa'; // Ajout d'icônes pour les compétences clés
-import { GiArtificialIntelligence } from 'react-icons/gi'; // Icône pour l'IA
+import { FaGithub, FaLinkedin, FaArrowDown } from 'react-icons/fa';
 import avatarImg from '../assets/Avatar.png';
 
-const Hero = () => (
-  // 1. Min-height ajustée pour ne pas être trop grande sur mobile si le contenu dépasse.
-  // 2. Padding vertical plus important sur mobile (pt-24 lg:pt-32)
-  <section className="flex flex-col-reverse lg:flex-row items-center justify-between min-h-screen px-6 lg:px-16 pt-24 lg:pt-32 pb-12 bg-darkbg text-white">
-    
-    {/* Partie gauche - Profil */}
-    {/* lg:w-3/5 pour donner plus d'espace au texte sur grand écran */}
-    <div className="lg:w-3/5 mb-10 lg:mb-0 text-center lg:text-left"> 
-      
-      {/* 1. Nouveau Titre Principal et Secondaire */}
-      <motion.h1
-        initial={{ opacity: 0, x: -100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-        className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-2"
-      >
-        Aloys Russel TONFO
-      </motion.h1>
-
-      <motion.h2
-        initial={{ opacity: 0, x: -100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.2, duration: 0.8 }}
-        className="text-2xl md:text-3xl lg:text-4xl font-semibold text-orange mb-6 drop-shadow-md"
-      >
-        Développeur Full Stack & IA
-      </motion.h2>
-
-      {/* 2. Paragraphe de Profil Amélioré */}
-      <motion.p
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.4, duration: 1 }}
-        className="text-base md:text-lg text-gray-300 mb-8 leading-relaxed max-w-xl lg:max-w-none mx-auto lg:mx-0"
-      >
-        Développeur **Full Stack bilingue** (Français – Anglais) spécialisé en **React** et **Python (Django/Flask)**. Je conçois des applications web performantes et évolutives, en intégrant l'**Intelligence Artificielle** (TensorFlow, Scikit-learn) et l'**Analyse de Données** pour créer des solutions réellement innovantes et orientées utilisateur.
-      </motion.p>
-      
-      {/* 3. Visibilité des Compétences Clés (Nouveau Bloc) */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6, duration: 1 }}
-        className="flex justify-center lg:justify-start space-x-6 text-3xl md:text-4xl text-gray-300 mb-10"
-      >
-        <div title="React" className="hover:text-orange transition-colors duration-300"><FaReact /></div>
-        <div title="Python / Django" className="hover:text-orange transition-colors duration-300"><FaPython /></div>
-        <div title="Intelligence Artificielle" className="hover:text-orange transition-colors duration-300"><GiArtificialIntelligence /></div>
-      </motion.div>
-
-      {/* Boutons */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8, duration: 1 }}
-        className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
-      >
-        <a href="#projects" className="px-8 py-3 bg-orange rounded-full text-darkbg font-semibold hover:bg-lightOrange transition-all shadow-lg hover:shadow-xl w-full sm:w-auto text-center">
-          Voir mes Projets
-        </a>
-        <a href="#contact" className="px-8 py-3 border border-orange rounded-full hover:bg-orange hover:text-darkbg transition-all shadow-lg hover:shadow-xl w-full sm:w-auto text-center">
-          Télécharger le CV
-        </a>
-      </motion.div>
-      
-      {/* Réseaux sociaux (déplacés en bas à gauche pour une meilleure hiérarchie) */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
-        className="flex space-x-6 mt-10 text-2xl justify-center lg:justify-start text-gray-400"
-      >
-        <a href="https://github.com/AloysRussel1" target="_blank" rel="noopener noreferrer" className="hover:text-orange transition-transform transform hover:scale-125">
-          <FaGithub title="GitHub" />
-        </a>
-        <a href="https://linkedin.com/in/AloysRussel1" target="_blank" rel="noopener noreferrer" className="hover:text-orange transition-transform transform hover:scale-125">
-          <FaLinkedin title="LinkedIn" />
-        </a>
-      </motion.div>
-    </div>
-
-    {/* Partie droite - Avatar animé */}
-    {/* lg:w-2/5 pour laisser la priorité au texte */}
-    <motion.div
-      initial={{ scale: 0, rotate: -15 }}
-      animate={{ scale: 1, rotate: 0 }}
-      transition={{ type: 'spring', stiffness: 120, damping: 12, delay: 0.5 }}
-      className="lg:w-2/5 flex justify-center mt-10 lg:mt-0"
+const Hero = () => {
+  return (
+    <section
+      id="hero"
+      className="relative min-h-screen flex items-center bg-[#0a0a0f] overflow-hidden"
     >
-      <motion.img
-        src={avatarImg}
-        alt="Aloys Russel TONFO Avatar"
-        className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full border-4 border-orange shadow-2xl object-cover"
-        // Animation subtile pour l'avatar
-        animate={{ y: [0, -10, 0] }}
-        transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
+      {/* Background grid */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
+          backgroundSize: '60px 60px',
+        }}
       />
-    </motion.div>
 
-  </section>
-);
+      {/* Glow orb */}
+      <div className="absolute top-1/3 right-1/3 w-[600px] h-[600px] bg-[#F97316]/5 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-24 w-full">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+
+          {/* LEFT — Text */}
+          <div className="order-2 lg:order-1">
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="font-mono text-[#F97316] text-sm tracking-widest uppercase mb-5"
+            >
+              Disponible · Montréal & Remote
+            </motion.p>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white leading-[1.08] tracking-tight mb-6"
+            >
+              Aloys Russel
+              <br />
+              <span className="text-[#F97316]">TONFO</span>
+            </motion.h1>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="flex items-center gap-3 mb-8"
+            >
+              <span className="h-[2px] w-10 bg-[#F97316]" />
+              <p className="text-lg text-white/70 font-medium tracking-wide">
+                Développeur Full Stack · React & Python
+              </p>
+            </motion.div>
+
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-white/50 text-base leading-relaxed max-w-lg mb-10"
+            >
+              Étudiant en Génie informatique à Polytechnique Montréal. Je conçois
+              des applications web performantes de bout en bout — interfaces React
+              réactives, APIs Django/Flask robustes, et intégrations IA ciblées.
+              Disponible pour des opportunités full stack au Québec ou en remote.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex flex-wrap gap-4 mb-12"
+            >
+              <a
+                href="#projects"
+                className="px-7 py-3.5 bg-[#F97316] text-[#0a0a0f] font-semibold text-sm tracking-wide rounded hover:bg-[#fb923c] transition-all shadow-lg shadow-[#F97316]/20 hover:shadow-[#F97316]/40"
+              >
+                Voir mes projets
+              </a>
+              <a
+                href="#contact"
+                className="px-7 py-3.5 border border-white/20 text-white/80 font-semibold text-sm tracking-wide rounded hover:border-[#F97316] hover:text-[#F97316] transition-all"
+              >
+                Me contacter
+              </a>
+            </motion.div>
+
+            {/* Socials */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.55 }}
+              className="flex items-center gap-5"
+            >
+              <a
+                href="https://github.com/AloysRussel1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/40 hover:text-white transition-colors"
+                aria-label="GitHub"
+              >
+                <FaGithub size={20} />
+              </a>
+              <a
+                href="https://linkedin.com/in/AloysRussel1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/40 hover:text-white transition-colors"
+                aria-label="LinkedIn"
+              >
+                <FaLinkedin size={20} />
+              </a>
+              <span className="h-px w-8 bg-white/20" />
+              <a
+                href="mailto:rtonfo@gmail.com"
+                className="font-mono text-xs text-white/40 hover:text-[#F97316] transition-colors tracking-wide"
+              >
+                rtonfo@gmail.com
+              </a>
+            </motion.div>
+          </div>
+
+          {/* RIGHT — Avatar */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, type: 'spring', stiffness: 100 }}
+            className="order-1 lg:order-2 flex justify-center"
+          >
+            <div className="relative">
+              {/* Decorative ring */}
+              <div className="absolute inset-0 rounded-full border border-[#F97316]/20 scale-110" />
+              <div className="absolute inset-0 rounded-full border border-white/5 scale-125" />
+
+              <motion.img
+                src={avatarImg}
+                alt="Aloys Russel TONFO"
+                className="w-64 h-64 md:w-80 md:h-80 lg:w-[360px] lg:h-[360px] rounded-full object-cover border-2 border-[#F97316]/40 shadow-2xl shadow-[#F97316]/10"
+                animate={{ y: [0, -8, 0] }}
+                transition={{ repeat: Infinity, duration: 7, ease: 'easeInOut' }}
+              />
+
+              {/* Badge disponible */}
+              <div className="absolute bottom-4 right-0 bg-[#0d0d14] border border-white/10 rounded-full px-4 py-2 flex items-center gap-2 shadow-xl">
+                <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+                <span className="text-white/70 text-xs font-mono">Open to work</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30"
+        >
+          <span className="text-[10px] tracking-widest uppercase font-mono">Scroll</span>
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+          >
+            <FaArrowDown size={12} />
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
 
 export default Hero;
