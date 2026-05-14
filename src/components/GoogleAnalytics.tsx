@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 const GoogleAnalytics = () => {
   useEffect(() => {
     // Remplace par ton ID Google Analytics 4 (format: G-XXXXXXXXXX)
-    const GA_ID = process.env.REACT_APP_GA_ID || 'G-XXXXXXXXXX';
+    const GA_ID = import.meta.env.VITE_APP_GA_ID || 'G-XXXXXXXXXX';
 
     // Script Google Analytics
     const script1 = document.createElement('script');
@@ -29,7 +29,7 @@ const GoogleAnalytics = () => {
     document.head.appendChild(script2);
 
     // Log pour confirmer le chargement en développement
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.log('Google Analytics initialized with ID:', GA_ID);
     }
   }, []);
