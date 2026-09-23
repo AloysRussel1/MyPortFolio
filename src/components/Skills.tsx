@@ -4,7 +4,7 @@ import { skillGroups } from '../portfolio';
 const Skills = () => (
   <section id="skills" className="py-16 md:py-24">
     <div className="container-x">
-      <SectionHeader label="Compétences" title="Stack technique" />
+      <SectionHeader label="Compétences" title="Mes outils au quotidien" />
 
       <Reveal>
         <dl className="divide-y divide-line border-y border-line">

@@ -14,7 +14,6 @@ export default {
         muted: v('muted'),
         line: v('line'),
         accent: v('accent'),
-        'accent-2': v('accent-2'),
         gold: v('gold'),
       },
       fontFamily: {

@@ -1,17 +1,25 @@
 /**
- * Contenu du portfolio — toutes les données affichées sont ici.
+ * Contenu du portfolio : toutes les données affichées sont ici.
  *
  * Pour ajouter une capture d'écran à un projet :
  *   1. dépose l'image dans src/assets/ (ex: gimmopro.png)
  *   2. importe-la ci-dessous : import gimmoproImg from './assets/gimmopro.png';
  *   3. renseigne `image: gimmoproImg` dans le projet correspondant.
- * Sans image, la carte affiche un fond neutre avec le nom du projet.
+ * Sans image, la carte affiche un visuel en dégradé avec le nom du projet.
  */
+
+/** Chiffres vérifiables affichés dans le bandeau sous le hero. */
+export const facts = [
+  { value: '4+', label: 'ans de freelance' },
+  { value: '2', label: 'applications en production' },
+  { value: '31', label: 'tests pytest sur GimmoPro' },
+];
 
 export const profile = {
   firstName: 'Aloys Russel',
   lastName: 'Tonfo',
-  role: 'Développeur Full Stack & AI/ML Engineer',
+  role: 'Développeur Full Stack & Machine Learning',
+  tagline: 'Building production apps. Full Stack + Machine Learning.',
   location: 'Montréal, QC',
   email: 'rtonfo@gmail.com',
   phone: '+1 418-473-7672',
@@ -38,23 +46,23 @@ export type Experience = {
 
 export const experiences: Experience[] = [
   {
-    role: 'Développeur IA — Projet Bira',
+    role: 'Développeur IA, projet Bira',
     company: 'Heka ST, société technique de Polytechnique Montréal',
-    period: 'Sept. 2026 — présent',
+    period: 'Depuis sept. 2026',
     current: true,
     context:
-      "Bira est un bras robotique d'assistance à l'alimentation pour les personnes à mobilité réduite, développé par l'équipe Heka ST. J'interviens sur la partie IA.",
+      "Bira est un bras robotique qui aide les personnes à mobilité réduite à manger. C'est un projet d'équipe ; je m'occupe de la partie IA.",
     points: [
-      'Développement de modèles de Computer Vision pour la détection et le suivi du visage et de la bouche',
-      "Optimisation de l'inférence pour un fonctionnement temps réel sur système embarqué",
-      'Traitement du langage naturel pour l’interprétation des commandes vocales',
+      'Modèles de Computer Vision qui détectent et suivent le visage et la bouche',
+      "Optimisation de l'inférence pour tenir le temps réel sur du matériel embarqué",
+      'NLP pour interpréter les commandes vocales',
     ],
     tags: ['Python', 'PyTorch', 'TensorFlow', 'OpenCV', 'NLP'],
   },
   {
     role: 'Développeur Full Stack',
     company: 'Freelance',
-    period: '2022 — présent',
+    period: 'Depuis 2022',
     current: true,
     points: [
       "Conception, développement et mise en production d'applications web complètes",
@@ -86,9 +94,9 @@ export const projects: Project[] = [
     id: 'gimmopro',
     title: 'GimmoPro',
     kicker: 'Plateforme de gestion locative',
-    period: '2022 — présent',
+    period: 'Depuis 2022',
     pitch:
-      'Application de gestion locative : biens, locataires et génération de documents PDF. Architecture modulaire, API sécurisée et PWA installable.',
+      'Gestion des biens, des locataires et des documents PDF dans une PWA installable. Backend et frontend séparés, déployés chacun de leur côté.',
     highlights: [
       'API Django REST avec authentification JWT et génération PDF',
       'PWA Ionic React / TypeScript',
@@ -103,10 +111,10 @@ export const projects: Project[] = [
   {
     id: 'imperial',
     title: 'Imperial Collection',
-    kicker: 'E-commerce de luxe France — Cameroun',
-    period: '2023 — présent',
+    kicker: 'E-commerce de luxe entre la France et le Cameroun',
+    period: 'Depuis 2023',
     pitch:
-      "Boutique en ligne transcontinentale avec gestion d'inventaire et paiements en temps réel.",
+      'Une boutique de luxe qui vend entre deux continents. Inventaire et paiements suivis en temps réel.',
     highlights: [
       'Frontend Next.js 14, API Django REST',
       'Inventaire et paiements en temps réel',

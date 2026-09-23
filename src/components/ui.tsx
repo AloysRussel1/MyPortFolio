@@ -36,12 +36,13 @@ export const Reveal = ({
 export const SectionHeader = ({ label, title }: { label: string; title: string }) => (
   <Reveal className="mb-10 md:mb-12">
     <p className="mb-3 flex items-center gap-3 text-sm font-medium uppercase tracking-wider text-accent">
-      <span className="h-0.5 w-8 rounded-full bg-gradient-to-r from-accent to-accent-2" aria-hidden />
+      <span className="h-0.5 w-8 rounded-full bg-gradient-to-r from-accent to-gold" aria-hidden />
       {label}
     </p>
-    <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
+    <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
       {title}
-      <span className="text-accent">.</span>
+      {/* point orange final, sauf si le titre a déjà sa ponctuation */}
+      {!/[?!.]$/.test(title) && <span className="text-accent">.</span>}
     </h2>
   </Reveal>
 );

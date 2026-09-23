@@ -45,12 +45,12 @@ const Contact = () => {
   return (
     <section id="contact" className="py-16 md:py-24">
       <div className="container-x">
-        <SectionHeader label="Contact" title="Travaillons ensemble" />
+        <SectionHeader label="Contact" title="On en parle ?" />
 
         <div className="grid gap-12 md:grid-cols-[1fr_1.4fr]">
           <Reveal>
             <p className="leading-relaxed text-muted">
-              Poste, stage, mission freelance ou projet en IA : écrivez-moi, je réponds sous 24 h.
+              Un poste, un stage, une mission freelance ou un projet en IA ? Écrivez-moi, je réponds rapidement.
             </p>
             <ul className="mt-8 space-y-3.5">
               {channels.map(c => (

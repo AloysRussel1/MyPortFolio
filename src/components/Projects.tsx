@@ -13,8 +13,14 @@ const Media = ({ project }: { project: Project }) => (
         className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
       />
     ) : (
-      <div className="grid h-full place-items-center">
-        <span className="text-2xl font-semibold tracking-tight text-muted/40">{project.title}</span>
+      <div
+        className="grid h-full place-items-center"
+        style={{
+          background:
+            'radial-gradient(120% 90% at 0% 0%, rgb(var(--accent) / 0.28), transparent 55%), radial-gradient(90% 80% at 100% 100%, rgb(var(--gold) / 0.18), transparent 60%)',
+        }}
+      >
+        <span className="text-3xl font-bold tracking-tight text-fg/80">{project.title}</span>
       </div>
     )}
   </div>
@@ -88,7 +94,7 @@ const ProjectCard = ({ project }: { project: Project }) => (
 const Projects = () => (
   <section id="projects" className="py-16 md:py-24">
     <div className="container-x">
-      <SectionHeader label="Projets" title="Applications en production" />
+      <SectionHeader label="Projets" title="Ce que j’ai construit" />
       <div className="grid gap-5 md:grid-cols-2">
         {projects.map((p, i) => (
           <Reveal key={p.id} delay={i * 0.05} className="h-full">

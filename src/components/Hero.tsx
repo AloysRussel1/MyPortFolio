@@ -15,22 +15,24 @@ const DetectionBox = ({
   box: { left: string; top: string; width: string; height: string };
   label: string;
   labelSide?: 'top' | 'right';
-  tone: 'accent' | 'accent-2';
+  tone: 'orange' | 'gold';
 }) => (
   <div
-    className={`absolute border ${tone === 'accent' ? 'border-[#F97316]' : 'border-[#818CF8]'}`}
+    className={`absolute border ${tone === 'orange' ? 'border-[#F97316]' : 'border-[#FCD34D]'}`}
     style={box}
     aria-hidden
   >
     <span
       className={`absolute whitespace-nowrap px-1 font-mono text-[9px] font-medium leading-4 text-[#111318] ${
-        tone === 'accent' ? 'bg-[#F97316]' : 'bg-[#818CF8]'
+        tone === 'orange' ? 'bg-[#F97316]' : 'bg-[#FCD34D]'
       } ${labelSide === 'top' ? 'bottom-full left-[-1px]' : 'left-full top-1/2 ml-1.5 -translate-y-1/2'}`}
     >
       {label}
     </span>
   </div>
 );
+
+const [taglineStart, taglineEnd] = profile.tagline.split('. ');
 
 const Hero = () => {
   const ref = useRef<HTMLElement>(null);
@@ -48,7 +50,7 @@ const Hero = () => {
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            'radial-gradient(600px circle at 15% 20%, rgb(var(--accent) / 0.08), transparent 60%), radial-gradient(500px circle at 85% 70%, rgb(var(--accent-2) / 0.07), transparent 60%)',
+            'radial-gradient(600px circle at 15% 20%, rgb(var(--accent) / 0.09), transparent 60%), radial-gradient(500px circle at 85% 75%, rgb(var(--gold) / 0.06), transparent 60%)',
         }}
       />
 
@@ -60,25 +62,30 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
           >
-            <p className="mb-5 flex items-center gap-1.5 text-sm text-muted">
-              <FiMapPin size={14} className="text-accent" /> {profile.location}
+            <p className="mb-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
+              <span className="font-medium text-fg">{profile.role}</span>
+              <span className="inline-flex items-center gap-1.5">
+                <FiMapPin size={14} className="text-accent" /> {profile.location}
+              </span>
             </p>
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
               {profile.firstName} {profile.lastName}
               <span className="text-accent">.</span>
             </h1>
-            <p className="mt-3 text-xl text-muted sm:text-2xl">
-              Développeur Full Stack <span className="text-accent">&</span> AI/ML Engineer
+            <p className="mt-4 text-2xl font-semibold leading-snug tracking-tight sm:text-3xl">
+              {taglineStart}.
+              <br />
+              <span className="text-flame">{taglineEnd}</span>
             </p>
 
             <p className="mt-7 max-w-xl leading-relaxed">
-              Je conçois et mets en production des applications web complètes — Django REST, React / TypeScript,
-              CI/CD — et j'intègre des modèles de machine learning temps réel. 4+ ans d'expérience en freelance.
+              Je développe des applications web de A à Z, de l'API Django à l'interface React, et je les mets en
+              ligne. Je fais ça en freelance depuis 2022.
             </p>
             <p className="mt-4 max-w-xl leading-relaxed">
-              Actuellement{' '}
-              <span className="font-medium text-accent">Développeur IA sur le projet Bira (Heka ST)</span> :
-              Computer Vision, NLP et optimisation de modèles.
+              En ce moment, je suis aussi{' '}
+              <span className="font-medium text-accent">développeur IA sur le projet Bira chez Heka ST</span>, où je
+              travaille sur la vision par ordinateur et les commandes vocales.
             </p>
 
             <div className="mt-9 flex flex-wrap items-center gap-3">
@@ -119,7 +126,8 @@ const Hero = () => {
             transition={{ duration: 0.7, delay: 0.1, ease: 'easeOut' }}
             className="relative"
           >
-            <div className="absolute -inset-px rounded-xl bg-gradient-to-br from-accent/60 via-transparent to-accent-2/50" aria-hidden />
+            {/* liseré dégradé orange vers or */}
+            <div className="absolute -inset-px rounded-xl bg-gradient-to-br from-accent via-accent/20 to-gold" aria-hidden />
             <div className="relative aspect-[1122/1402] overflow-hidden rounded-xl bg-elevated">
               <img
                 src={avatarImg}
@@ -130,13 +138,13 @@ const Hero = () => {
               <DetectionBox
                 box={{ left: '37.5%', top: '10.5%', width: '20.5%', height: '21%' }}
                 label="face"
-                tone="accent"
+                tone="orange"
               />
               <DetectionBox
                 box={{ left: '43.5%', top: '23.5%', width: '9%', height: '3.5%' }}
                 label="mouth"
                 labelSide="right"
-                tone="accent-2"
+                tone="gold"
               />
             </div>
           </motion.div>
