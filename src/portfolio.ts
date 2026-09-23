@@ -1,12 +1,37 @@
 /**
  * Contenu du portfolio : toutes les données affichées sont ici.
  *
- * Pour ajouter une capture d'écran à un projet :
- *   1. dépose l'image dans src/assets/ (ex: gimmopro.png)
- *   2. importe-la ci-dessous : import gimmoproImg from './assets/gimmopro.png';
- *   3. renseigne `image: gimmoproImg` dans le projet correspondant.
+ * Captures des projets : remplace le fichier dans src/assets/, ou importe une
+ * nouvelle image ci-dessous et renseigne `image` dans le projet correspondant.
  * Sans image, la carte affiche un visuel en dégradé avec le nom du projet.
  */
+
+import gimmoproImg from './assets/gimmopro.jpg';
+import imperialImg from './assets/Imperial.jpeg';
+
+/** Texte du hero, en français et en anglais (bouton FR / EN dans le hero). */
+export const heroCopy = {
+  fr: {
+    role: 'Développeur Full Stack & Machine Learning',
+    tagline: ['Des applis qui tournent en production.', 'Full Stack + Machine Learning.'],
+    intro: [
+      "Je développe des applications web complètes avec Django et React, du backend jusqu'au déploiement. Je fais ça en freelance depuis 2022.",
+      'En ce moment, je suis aussi développeur IA chez Heka ST, sur le projet Bira. Je travaille sur la vision par ordinateur et les commandes vocales, en Python avec PyTorch et OpenCV.',
+    ],
+    ctaProjects: 'Voir mes projets',
+    ctaContact: 'Me contacter',
+  },
+  en: {
+    role: 'Full Stack & Machine Learning Developer',
+    tagline: ['Building production apps.', 'Full Stack + Machine Learning.'],
+    intro: [
+      "I build complete web apps with Django and React, from the backend all the way to deployment. I've been doing it as a freelancer since 2022.",
+      "Right now I'm also an AI developer at Heka ST, working on Bira. I handle computer vision and voice commands, in Python with PyTorch and OpenCV.",
+    ],
+    ctaProjects: 'See my projects',
+    ctaContact: 'Get in touch',
+  },
+};
 
 /** Chiffres vérifiables affichés dans le bandeau sous le hero. */
 export const facts = [
@@ -18,8 +43,6 @@ export const facts = [
 export const profile = {
   firstName: 'Aloys Russel',
   lastName: 'Tonfo',
-  role: 'Développeur Full Stack & Machine Learning',
-  tagline: 'Building production apps. Full Stack + Machine Learning.',
   location: 'Montréal, QC',
   email: 'rtonfo@gmail.com',
   phone: '+1 418-473-7672',
@@ -50,8 +73,7 @@ export const experiences: Experience[] = [
     company: 'Heka ST, société technique de Polytechnique Montréal',
     period: 'Depuis sept. 2026',
     current: true,
-    context:
-      "Bira est un bras robotique qui aide les personnes à mobilité réduite à manger. C'est un projet d'équipe ; je m'occupe de la partie IA.",
+    context: "Je m'occupe de la partie IA de Bira, un bras robotique d'assistance développé en équipe.",
     points: [
       'Modèles de Computer Vision qui détectent et suivent le visage et la bouche',
       "Optimisation de l'inférence pour tenir le temps réel sur du matériel embarqué",
@@ -79,6 +101,8 @@ export type Project = {
   title: string;
   kicker: string;
   period: string;
+  /** Pour un projet d'équipe : ce que j'y fais, affiché en évidence */
+  role?: string;
   pitch: string;
   highlights: string[];
   stack: string[];
@@ -87,6 +111,23 @@ export type Project = {
   githubExtra?: { label: string; href: string };
   deploy?: string;
   image?: string;
+};
+
+/** Bira : projet d'équipe Heka ST, affiché en vedette avec un schéma de mon rôle. */
+export const featuredProject: Project = {
+  id: 'bira',
+  title: 'Bira',
+  kicker: "Projet d'équipe chez Heka ST",
+  period: 'Depuis sept. 2026',
+  role: 'Mon rôle : développeur IA',
+  pitch:
+    "Un bras robotique qui aide les personnes à mobilité réduite à manger. Je travaille sur ce que le bras voit et sur ce qu'il comprend.",
+  highlights: [
+    'Détection et suivi du visage et de la bouche en temps réel',
+    "Optimisation de l'inférence pour tourner sur du matériel embarqué",
+    'NLP pour interpréter les commandes vocales',
+  ],
+  stack: ['Python', 'PyTorch', 'TensorFlow', 'OpenCV', 'NLP'],
 };
 
 export const projects: Project[] = [
@@ -107,6 +148,7 @@ export const projects: Project[] = [
     github: 'https://github.com/AloysRussel1/gimmopro',
     githubExtra: { label: 'Backend', href: 'https://github.com/AloysRussel1/gimmopro_backend' },
     deploy: 'Railway · Vercel',
+    image: gimmoproImg,
   },
   {
     id: 'imperial',
@@ -124,6 +166,7 @@ export const projects: Project[] = [
     live: 'https://imperial-edit.vercel.app',
     github: 'https://github.com/AloysRussel1/imperial-edit',
     deploy: 'Vercel · Render',
+    image: imperialImg,
   },
 ];
 

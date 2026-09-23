@@ -1,9 +1,11 @@
-import { useRef } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { FiArrowRight, FiMail, FiMapPin } from 'react-icons/fi';
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa';
 import avatarImg from '../assets/Avatar.png';
-import { profile } from '../portfolio';
+import { heroCopy, profile } from '../portfolio';
+
+type Lang = keyof typeof heroCopy;
 
 /** Cadre de détection fin et statique, en clin d'œil au travail en Computer Vision. */
 const DetectionBox = ({
@@ -15,16 +17,12 @@ const DetectionBox = ({
   box: { left: string; top: string; width: string; height: string };
   label: string;
   labelSide?: 'top' | 'right';
-  tone: 'orange' | 'gold';
+  tone: 'accent' | 'gold';
 }) => (
-  <div
-    className={`absolute border ${tone === 'orange' ? 'border-[#F97316]' : 'border-[#FCD34D]'}`}
-    style={box}
-    aria-hidden
-  >
+  <div className={`absolute border ${tone === 'accent' ? 'border-accent' : 'border-gold'}`} style={box} aria-hidden>
     <span
-      className={`absolute whitespace-nowrap px-1 font-mono text-[9px] font-medium leading-4 text-[#111318] ${
-        tone === 'orange' ? 'bg-[#F97316]' : 'bg-[#FCD34D]'
+      className={`absolute whitespace-nowrap px-1 font-mono text-[9px] font-medium leading-4 text-bg ${
+        tone === 'accent' ? 'bg-accent' : 'bg-gold'
       } ${labelSide === 'top' ? 'bottom-full left-[-1px]' : 'left-full top-1/2 ml-1.5 -translate-y-1/2'}`}
     >
       {label}
@@ -32,9 +30,26 @@ const DetectionBox = ({
   </div>
 );
 
-const [taglineStart, taglineEnd] = profile.tagline.split('. ');
+const LangSwitch = ({ lang, onChange }: { lang: Lang; onChange: (l: Lang) => void }) => (
+  <div role="group" aria-label="Langue du texte" className="inline-flex rounded-md border border-line p-0.5 text-xs font-semibold">
+    {(['fr', 'en'] as const).map(l => (
+      <button
+        key={l}
+        onClick={() => onChange(l)}
+        aria-pressed={lang === l}
+        className={`rounded px-2 py-1 uppercase transition-colors duration-200 ${
+          lang === l ? 'bg-accent text-bg' : 'text-muted hover:text-gold'
+        }`}
+      >
+        {l}
+      </button>
+    ))}
+  </div>
+);
 
 const Hero = () => {
+  const [lang, setLang] = useState<Lang>('fr');
+  const copy = heroCopy[lang];
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
@@ -62,59 +77,69 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
           >
-            <p className="mb-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
-              <span className="font-medium text-fg">{profile.role}</span>
+            <div className="mb-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
+              <LangSwitch lang={lang} onChange={setLang} />
               <span className="inline-flex items-center gap-1.5">
                 <FiMapPin size={14} className="text-accent" /> {profile.location}
               </span>
-            </p>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            </div>
+
+            <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl">
               {profile.firstName} {profile.lastName}
               <span className="text-accent">.</span>
             </h1>
-            <p className="mt-4 text-2xl font-semibold leading-snug tracking-tight sm:text-3xl">
-              {taglineStart}.
-              <br />
-              <span className="text-flame">{taglineEnd}</span>
-            </p>
 
-            <p className="mt-7 max-w-xl leading-relaxed">
-              Je développe des applications web de A à Z, de l'API Django à l'interface React, et je les mets en
-              ligne. Je fais ça en freelance depuis 2022.
-            </p>
-            <p className="mt-4 max-w-xl leading-relaxed">
-              En ce moment, je suis aussi{' '}
-              <span className="font-medium text-accent">développeur IA sur le projet Bira chez Heka ST</span>, où je
-              travaille sur la vision par ordinateur et les commandes vocales.
-            </p>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={lang}
+                lang={lang}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.2 }}
+              >
+                <p className="mt-3 text-lg font-medium text-muted">{copy.role}</p>
+                <p className="mt-6 font-display text-2xl font-bold leading-snug tracking-tight sm:text-3xl">
+                  {copy.tagline[0]}
+                  <br />
+                  <span className="text-flame">{copy.tagline[1]}</span>
+                </p>
 
-            <div className="mt-9 flex flex-wrap items-center gap-3">
-              <a href="#projects" className="btn-primary group">
-                Voir mes projets
-                <FiArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
-              </a>
-              <a href="#contact" className="btn-secondary">
-                Me contacter
-              </a>
-              <div className="ml-1 flex items-center gap-0.5">
-                {[
-                  { href: profile.github, icon: <FaGithub size={18} />, label: 'GitHub' },
-                  { href: profile.linkedin, icon: <FaLinkedinIn size={18} />, label: 'LinkedIn' },
-                  { href: `mailto:${profile.email}`, icon: <FiMail size={18} />, label: 'Email' },
-                ].map(s => (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    target={s.href.startsWith('http') ? '_blank' : undefined}
-                    rel="noopener noreferrer"
-                    aria-label={s.label}
-                    className="icon-link h-10 w-10"
-                  >
-                    {s.icon}
-                  </a>
+                {copy.intro.map(p => (
+                  <p key={p} className="mt-5 max-w-xl leading-relaxed">
+                    {p}
+                  </p>
                 ))}
-              </div>
-            </div>
+
+                <div className="mt-9 flex flex-wrap items-center gap-3">
+                  <a href="#projects" className="btn-primary group">
+                    {copy.ctaProjects}
+                    <FiArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+                  </a>
+                  <a href="#contact" className="btn-secondary">
+                    {copy.ctaContact}
+                  </a>
+                  <div className="ml-1 flex items-center gap-0.5">
+                    {[
+                      { href: profile.github, icon: <FaGithub size={18} />, label: 'GitHub' },
+                      { href: profile.linkedin, icon: <FaLinkedinIn size={18} />, label: 'LinkedIn' },
+                      { href: `mailto:${profile.email}`, icon: <FiMail size={18} />, label: 'Email' },
+                    ].map(s => (
+                      <a
+                        key={s.label}
+                        href={s.href}
+                        target={s.href.startsWith('http') ? '_blank' : undefined}
+                        rel="noopener noreferrer"
+                        aria-label={s.label}
+                        className="icon-link h-10 w-10"
+                      >
+                        {s.icon}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </motion.div>
         </motion.div>
 
@@ -138,7 +163,7 @@ const Hero = () => {
               <DetectionBox
                 box={{ left: '37.5%', top: '10.5%', width: '20.5%', height: '21%' }}
                 label="face"
-                tone="orange"
+                tone="accent"
               />
               <DetectionBox
                 box={{ left: '43.5%', top: '23.5%', width: '9%', height: '3.5%' }}

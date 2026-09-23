@@ -105,7 +105,7 @@ const Contact = () => {
                 </label>
 
                 {status === 'error' && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-accent">
                     L'envoi a échoué. Réessayez ou écrivez directement à {profile.email}.
                   </p>
                 )}

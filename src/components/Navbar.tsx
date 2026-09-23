@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FiMoon, FiSun, FiMenu, FiX } from 'react-icons/fi';
-import { useTheme } from '../hooks/useTheme';
+import { FiMenu, FiX } from 'react-icons/fi';
 
 const navLinks = [
   { name: 'Expérience', id: 'experience' },
@@ -14,7 +13,6 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState('');
-  const { theme, toggle } = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -43,7 +41,7 @@ const Navbar = () => {
       }`}
     >
       <div className="container-x flex h-16 items-center justify-between">
-        <a href="#hero" className="font-semibold tracking-tight" onClick={() => setOpen(false)}>
+        <a href="#hero" className="font-display font-bold tracking-tight" onClick={() => setOpen(false)}>
           Aloys Russel Tonfo<span className="text-accent">.</span>
         </a>
 
@@ -65,13 +63,6 @@ const Navbar = () => {
             </ul>
           </nav>
 
-          <button
-            onClick={toggle}
-            aria-label={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
-            className="icon-link h-9 w-9"
-          >
-            {theme === 'dark' ? <FiSun size={16} /> : <FiMoon size={16} />}
-          </button>
           <button
             onClick={() => setOpen(o => !o)}
             aria-label="Menu"

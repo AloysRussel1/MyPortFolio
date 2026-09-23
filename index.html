@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr" class="dark">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/src/assets/Avatar.png" />
@@ -16,19 +16,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Geist:wght@400..700&family=Geist+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
-
-    <!-- Sombre par défaut ; applique le choix du visiteur avant le rendu (pas de flash) -->
-    <script>
-      try {
-        var t = localStorage.getItem('theme');
-        if (t === 'light') {
-          document.documentElement.classList.remove('dark');
-        }
-      } catch (e) {}
-    </script>
   </head>
   <body>
     <div id="root"></div>

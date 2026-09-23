@@ -3,25 +3,10 @@
 @tailwind utilities;
 
 /* ---------------------------------------------------- */
-/* 1. PALETTE : variables RGB                            */
-/*    Sombre = identité principale (charcoal, orange, or) */
-/*    Clair = mêmes accents, assombris pour la lisibilité */
+/* 1. PALETTE : variables RGB, un seul thème sombre      */
 /* ---------------------------------------------------- */
 
 :root {
-  --bg: 250 250 250;
-  --surface: 255 255 255;
-  --elevated: 243 244 246;
-  --fg: 17 19 24;
-  --muted: 75 85 99;
-  --line: 229 231 235;
-  --accent: 234 88 12; /* orange assombri */
-  --gold: 180 83 9; /* or assombri (ambre) */
-  --on-accent: 255 255 255;
-  color-scheme: light;
-}
-
-.dark {
   --bg: 17 19 24; /* #111318 charcoal */
   --surface: 22 25 32; /* cartes : charcoal à peine relevé */
   --elevated: 31 35 44;
@@ -30,7 +15,6 @@
   --line: 55 65 81; /* #374151 */
   --accent: 249 115 22; /* #F97316 orange */
   --gold: 252 211 77; /* #FCD34D gold */
-  --on-accent: 17 19 24;
   color-scheme: dark;
 }
 
@@ -47,11 +31,16 @@ body {
   @apply font-sans antialiased;
   background-color: rgb(var(--bg));
   color: rgb(var(--fg));
-  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1,
+h2,
+h3 {
+  @apply font-display;
 }
 
 ::selection {
-  background: rgb(var(--accent) / 0.3);
+  background: rgb(var(--accent) / 0.35);
 }
 
 :focus-visible {
@@ -81,8 +70,8 @@ body {
     @apply max-w-5xl mx-auto px-5 sm:px-8;
   }
 
-  /* Texte en dégradé orange vers or */
-  /* inline-block : le dégradé couvre la largeur du texte, pas celle du bloc parent */
+  /* Texte en dégradé orange vers or.
+     inline-block : le dégradé couvre la largeur du texte, pas celle du bloc parent */
   .text-flame {
     display: inline-block;
     background: linear-gradient(90deg, rgb(var(--accent)), rgb(var(--gold)));
@@ -107,12 +96,11 @@ body {
   .btn-primary {
     @apply inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold;
     background-color: rgb(var(--accent));
-    color: rgb(var(--on-accent));
-    transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+    color: rgb(var(--bg));
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
   }
   .btn-primary:hover {
     background-color: rgb(var(--gold));
-    color: rgb(17 19 24);
     box-shadow: 0 8px 28px -8px rgb(var(--gold) / 0.55);
   }
   .btn-primary:disabled {
@@ -162,11 +150,11 @@ body {
   .card {
     border: 1px solid rgb(var(--line));
     background-color: rgb(var(--surface));
-    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
   }
   .card-hover:hover {
-    transform: scale(1.02);
+    transform: translateY(-4px);
     border-color: rgb(var(--gold) / 0.45);
-    box-shadow: 0 20px 44px -20px rgb(var(--accent) / 0.35);
+    box-shadow: 0 24px 48px -24px rgb(var(--accent) / 0.4);
   }
 }
