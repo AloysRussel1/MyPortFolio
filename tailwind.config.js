@@ -13,34 +13,13 @@ export default {
         fg: v('fg'),
         muted: v('muted'),
         line: v('line'),
-        cyan: v('cyan'),
-        magenta: v('magenta'),
-        violet: v('violet'),
-        lime: v('lime'),
+        accent: v('accent'),
+        'accent-2': v('accent-2'),
+        gold: v('gold'),
       },
       fontFamily: {
         sans: ['Geist', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['"Geist Mono"', '"JetBrains Mono"', 'ui-monospace', 'monospace'],
-        serif: ['"Instrument Serif"', 'Georgia', 'serif'],
-      },
-      keyframes: {
-        marquee: {
-          from: { transform: 'translateX(0)' },
-          to: { transform: 'translateX(-50%)' },
-        },
-        scan: {
-          '0%, 100%': { top: '0%' },
-          '50%': { top: '100%' },
-        },
-        blink: {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0' },
-        },
-      },
-      animation: {
-        marquee: 'marquee 40s linear infinite',
-        scan: 'scan 5s ease-in-out infinite',
-        blink: 'blink 1s step-end infinite',
       },
     },
   },

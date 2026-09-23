@@ -35,10 +35,3 @@ export const techIcons: Record<string, IconType> = {
   'CI/CD': SiGithubactions,
   'VS Code': VscVscode,
 };
-
-export const accentBg = {
-  cyan: 'bg-cyan',
-  magenta: 'bg-magenta',
-  violet: 'bg-violet',
-  lime: 'bg-lime',
-} as const;

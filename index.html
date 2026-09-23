@@ -11,20 +11,20 @@
     />
     <meta property="og:title" content="Aloys Russel Tonfo — Full Stack & AI/ML Engineer" />
     <meta property="og:description" content="Du modèle ML au déploiement en production." />
-    <meta name="theme-color" content="#07070c" />
+    <meta name="theme-color" content="#111318" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Applique le thème avant le rendu pour éviter le flash -->
+    <!-- Sombre par défaut ; applique le choix du visiteur avant le rendu (pas de flash) -->
     <script>
       try {
         var t = localStorage.getItem('theme');
-        if (t === 'light' || (!t && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+        if (t === 'light') {
           document.documentElement.classList.remove('dark');
         }
       } catch (e) {}
