@@ -1,206 +1,221 @@
-import { motion } from 'framer-motion';
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
-import projectImg1 from '../assets/projet1.png';
-import projectImg2 from '../assets/projet2.png';
-import projectImg4 from '../assets/ai_school.jpg';
-import projectImg5 from '../assets/ai_school.jpg';
+import type { MouseEvent } from 'react';
+import { FiArrowUpRight, FiCheck } from 'react-icons/fi';
+import { FaGithub } from 'react-icons/fa';
+import { Em, Reveal, SectionHeader, TechTag } from './ui';
+import { projects, type Project } from '../portfolio';
 
-const projects = [
-  {
-    id: 1,
-    category: 'Full Stack · Temps Réel',
-    title: 'Plateforme de gestion collaborative',
-    description:
-      'Application web complète de gestion de tâches avec mises à jour en temps réel via WebSockets, authentification sécurisée JWT et gestion des rôles utilisateurs. Architecture découplée React / Django REST.',
-    image: projectImg1,
-    github: 'https://github.com/AloysRussel1/project1',
-    live: '#',
-    stack: ['React', 'Django', 'PostgreSQL', 'REST API', 'WebSockets', 'JWT'],
-    featured: true,
-  },
-  {
-    id: 2,
-    category: 'Intelligence Artificielle · Python',
-    title: 'Prédiction des prix agricoles',
-    description:
-      "Service web de prédiction de l'évolution des prix des denrées alimentaires. Modèle supervisé (Scikit-learn / TensorFlow) exposé via une API Flask, avec tableau de bord de visualisation Pandas.",
-    image: projectImg2,
-    github: 'https://github.com/AloysRussel1/project2',
-    live: '#',
-    stack: ['Flask', 'TensorFlow', 'Scikit-learn', 'Pandas', 'Python'],
-    featured: true,
-  },
-  {
-    id: 3,
-    category: 'SaaS · Backend',
-    title: "Système de gestion d'établissement",
-    description:
-      'Plateforme SaaS pour la gestion des emplois du temps, membres et événements. Architecture modulaire multi-clients avec Django, MySQL et Bootstrap.',
-    image: projectImg4,
-    github: 'https://github.com/AloysRussel1/project4',
-    live: '#',
-    stack: ['Django', 'MySQL', 'Bootstrap', 'Python'],
-    featured: false,
-  },
-  {
-    id: 4,
-    category: 'Frontend · UX/UI',
-    title: 'Dashboard admin immobilier',
-    description:
-      "Tableau de bord d'administration pour agents immobiliers : gestion des biens, statistiques analytiques et administration des comptes. Interface React entièrement responsive.",
-    image: projectImg5,
-    github: 'https://github.com/AloysRussel1/project5',
-    live: '#',
-    stack: ['React', 'Axios', 'Tailwind CSS', 'REST API'],
-    featured: false,
-  },
-];
+const accentRgb = { cyan: '--cyan', magenta: '--magenta', violet: '--violet' } as const;
 
-const Projects = () => (
-  <section id="projects" className="bg-[#0a0a0f] py-28 px-6 lg:px-12">
-    <div className="max-w-7xl mx-auto">
+/** Met à jour la position du halo lumineux qui suit la souris sur la carte. */
+const trackSpotlight = (e: MouseEvent<HTMLElement>) => {
+  const r = e.currentTarget.getBoundingClientRect();
+  e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`);
+  e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`);
+};
 
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="mb-16"
-      >
-        <p className="font-mono text-[#F97316] text-xs tracking-widest uppercase mb-3">
-          — Réalisations
-        </p>
-        <h2 className="text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
-          Mes projets
-        </h2>
-        <p className="text-white/50 max-w-xl text-base leading-relaxed">
-          Des applications concrètes alliant développement Full Stack et intégration IA,
-          conçues pour résoudre de vrais problèmes.
-        </p>
-      </motion.div>
+/** Visuel génératif affiché tant qu'aucune capture n'est fournie. */
+const Placeholder = ({ project }: { project: Project }) => {
+  const c = `var(${accentRgb[project.accent]})`;
+  return (
+    <div
+      className="absolute inset-0 overflow-hidden"
+      style={{
+        background: `radial-gradient(120% 90% at 20% 10%, rgb(${c} / 0.35), transparent 55%), radial-gradient(90% 80% at 90% 100%, rgb(var(--violet) / 0.3), transparent 60%), rgb(var(--elevated))`,
+      }}
+    >
+      <div
+        className="absolute inset-0 opacity-[0.15]"
+        style={{
+          backgroundImage: 'radial-gradient(rgb(var(--fg)) 1px, transparent 1px)',
+          backgroundSize: '18px 18px',
+        }}
+      />
+      {project.status === 'wip' ? (
+        // cible de tracking pour Bira
+        <div className="absolute inset-0 grid place-items-center">
+          {[160, 110, 60].map(s => (
+            <span
+              key={s}
+              className="absolute rounded-full border border-magenta/40"
+              style={{ width: s, height: s }}
+            />
+          ))}
+          <span className="absolute h-px w-56 bg-magenta/40" />
+          <span className="absolute h-56 w-px bg-magenta/40" />
+          <span className="absolute h-3 w-3 animate-ping rounded-full bg-magenta" />
+        </div>
+      ) : (
+        <span className="absolute bottom-4 left-5 font-serif text-5xl italic text-fg/20 md:text-6xl">
+          {project.title}
+        </span>
+      )}
+    </div>
+  );
+};
 
-      {/* Featured projects — large */}
-      <div className="grid lg:grid-cols-2 gap-6 mb-6">
-        {projects.filter(p => p.featured).map((project, index) => (
-          <motion.article
-            key={project.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, delay: index * 0.15 }}
-            className="group relative bg-[#0f0f18] border border-white/6 rounded-xl overflow-hidden hover:border-[#F97316]/40 transition-all duration-500"
-          >
-            {/* Image */}
-            <div className="overflow-hidden h-56">
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-[1.03] transition-all duration-700"
-              />
-            </div>
-
-            {/* Content */}
-            <div className="p-7">
-              <p className="font-mono text-[#F97316] text-[11px] tracking-widest uppercase mb-2">
-                {project.category}
-              </p>
-              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#F97316] transition-colors">
-                {project.title}
-              </h3>
-              <p className="text-white/50 text-sm leading-relaxed mb-5">
-                {project.description}
-              </p>
-
-              {/* Stack */}
-              <div className="flex flex-wrap gap-2 mb-6">
-                {project.stack.map(tech => (
-                  <span
-                    key={tech}
-                    className="px-2.5 py-1 text-[11px] font-mono text-[#F97316]/80 bg-[#F97316]/8 border border-[#F97316]/20 rounded"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-
-              {/* Links */}
-              <div className="flex gap-4">
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-white/60 text-sm hover:text-white transition-colors"
-                >
-                  <FaGithub size={15} /> Code source
-                </a>
-                <a
-                  href={project.live}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-white/60 text-sm hover:text-[#F97316] transition-colors"
-                >
-                  <FaExternalLinkAlt size={13} /> Démo live
-                </a>
-              </div>
-            </div>
-          </motion.article>
-        ))}
+const Media = ({ project }: { project: Project }) => {
+  const isVision = project.status === 'wip';
+  const host = project.live?.replace('https://', '');
+  return (
+    <div className="overflow-hidden rounded-2xl border border-line/10 bg-bg">
+      {/* barre de fenêtre : navigateur pour les sites, caméra pour Bira */}
+      <div className="flex items-center gap-3 border-b border-line/10 px-3 py-2">
+        <div className="flex gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-line/15" />
+          <span className="h-2.5 w-2.5 rounded-full bg-line/15" />
+          <span className="h-2.5 w-2.5 rounded-full bg-line/15" />
+        </div>
+        <span className="flex-1 truncate rounded-md bg-elevated px-3 py-1 text-center font-mono text-[10px] text-muted">
+          {isVision ? '● rec — bira/arm_cam_0' : host}
+        </span>
       </div>
-
-      {/* Other projects — compact */}
-      <div className="grid md:grid-cols-2 gap-6">
-        {projects.filter(p => !p.featured).map((project, index) => (
-          <motion.article
-            key={project.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="group bg-[#0f0f18] border border-white/6 rounded-xl p-6 hover:border-[#F97316]/30 transition-all duration-500"
-          >
-            <p className="font-mono text-[#F97316]/70 text-[11px] tracking-widest uppercase mb-2">
-              {project.category}
-            </p>
-            <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#F97316] transition-colors">
-              {project.title}
-            </h3>
-            <p className="text-white/40 text-sm leading-relaxed mb-4">
-              {project.description}
-            </p>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {project.stack.map(tech => (
-                <span
-                  key={tech}
-                  className="px-2 py-0.5 text-[10px] font-mono text-[#F97316]/70 bg-[#F97316]/6 border border-[#F97316]/15 rounded"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-            <div className="flex gap-4">
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-white/50 text-xs hover:text-white transition-colors"
-              >
-                <FaGithub size={13} /> GitHub
-              </a>
-              <a
-                href={project.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-white/50 text-xs hover:text-[#F97316] transition-colors"
-              >
-                <FaExternalLinkAlt size={11} /> Live
-              </a>
-            </div>
-          </motion.article>
-        ))}
+      <div className="relative aspect-[16/10] overflow-hidden">
+        {project.image ? (
+          <img
+            src={project.image}
+            alt={`Capture d'écran de ${project.title}`}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
+          />
+        ) : (
+          <Placeholder project={project} />
+        )}
       </div>
     </div>
-  </section>
+  );
+};
+
+const Status = ({ status }: { status: Project['status'] }) =>
+  status === 'live' ? (
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-lime/30 bg-lime/10 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-lime">
+      <span className="h-1.5 w-1.5 rounded-full bg-lime" /> Live
+    </span>
+  ) : (
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-magenta/30 bg-magenta/10 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-magenta">
+      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-magenta" /> En cours
+    </span>
+  );
+
+const ProjectCard = ({ project, featured }: { project: Project; featured?: boolean }) => (
+  <article
+    onMouseMove={trackSpotlight}
+    className="ring-gradient group relative h-full overflow-hidden rounded-3xl border border-line/10 bg-surface p-3 md:p-4"
+  >
+    {/* spotlight */}
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+      style={{
+        background: `radial-gradient(420px circle at var(--mx) var(--my), rgb(var(${accentRgb[project.accent]}) / 0.12), transparent 70%)`,
+      }}
+    />
+
+    <div className={`relative grid gap-6 ${featured ? 'lg:grid-cols-2 lg:items-center lg:gap-10' : ''}`}>
+      <div className={featured ? 'lg:order-2' : ''}>
+        <Media project={project} />
+      </div>
+
+      <div className="flex flex-col px-2 pb-3 md:px-3">
+        <div className="mb-4 flex items-center gap-3">
+          <span className="font-mono text-xs text-muted">{project.index}</span>
+          <span className="h-px w-6 bg-line/20" />
+          <Status status={project.status} />
+          <span className="ml-auto font-mono text-[11px] text-muted">{project.period}</span>
+        </div>
+
+        <p className="font-mono text-xs text-muted">{project.kicker}</p>
+        <h3 className={`mt-1 font-semibold tracking-tight ${featured ? 'text-4xl md:text-5xl' : 'text-3xl'}`}>
+          {project.title}
+        </h3>
+        <p className="mt-3 text-[15px] leading-relaxed text-muted">{project.pitch}</p>
+
+        <ul className="mt-5 space-y-2">
+          {project.highlights.map(h => (
+            <li key={h} className="flex items-start gap-2.5 text-sm">
+              <FiCheck className="mt-0.5 flex-shrink-0 text-cyan" />
+              {h}
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-5 flex flex-wrap gap-1.5">
+          {project.stack.map(t => (
+            <TechTag key={t} name={t} />
+          ))}
+        </div>
+
+        <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-line/10 pt-5 text-sm">
+          {project.live && (
+            <a
+              href={project.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="ouvrir"
+              className="group/link inline-flex items-center gap-1.5 rounded-full bg-fg px-4 py-2 font-medium text-bg transition-transform hover:scale-[1.03]"
+            >
+              Voir le site
+              <FiArrowUpRight className="transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
+            </a>
+          )}
+          {project.github && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-underline inline-flex items-center gap-1.5 text-muted hover:text-fg"
+            >
+              <FaGithub /> Code
+            </a>
+          )}
+          {project.githubExtra && (
+            <a
+              href={project.githubExtra.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-underline inline-flex items-center gap-1.5 text-muted hover:text-fg"
+            >
+              <FaGithub /> {project.githubExtra.label}
+            </a>
+          )}
+          {project.deploy && <span className="font-mono text-[11px] text-muted">▲ {project.deploy}</span>}
+          {!project.live && !project.github && (
+            <span className="font-mono text-[11px] text-muted">Code privé · démo sur demande</span>
+          )}
+        </div>
+      </div>
+    </div>
+  </article>
 );
+
+const Projects = () => {
+  const [featured, ...rest] = projects;
+  return (
+    <section id="projects" className="py-24 md:py-32">
+      <div className="container-x">
+        <SectionHeader
+          index="02"
+          label="projets"
+          title={
+            <>
+              Du robot à la boutique, <Em>en production</Em>.
+            </>
+          }
+          aside="Trois projets qui couvrent tout le spectre : vision par ordinateur embarquée, SaaS métier et e-commerce transcontinental."
+        />
+
+        <Reveal className="mb-4">
+          <ProjectCard project={featured} featured />
+        </Reveal>
+        <div className="grid gap-4 md:grid-cols-2">
+          {rest.map((p, i) => (
+            <Reveal key={p.id} delay={i * 0.1} className="h-full">
+              <ProjectCard project={p} />
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export default Projects;

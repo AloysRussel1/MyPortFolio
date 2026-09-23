@@ -1,10 +1,34 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/x-icon" href="/src/assets/Avatar.png" />
+    <link rel="icon" type="image/png" href="/src/assets/Avatar.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>aloysrussel-portfolio</title>
+    <title>Aloys Russel Tonfo — Full Stack & AI/ML Engineer</title>
+    <meta
+      name="description"
+      content="Aloys Russel Tonfo — Développeur Full Stack & AI/ML Engineer à Montréal. Django, React/TypeScript, Computer Vision et NLP. Développeur IA chez Heka ST (projet Bira)."
+    />
+    <meta property="og:title" content="Aloys Russel Tonfo — Full Stack & AI/ML Engineer" />
+    <meta property="og:description" content="Du modèle ML au déploiement en production." />
+    <meta name="theme-color" content="#07070c" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Applique le thème avant le rendu pour éviter le flash -->
+    <script>
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || (!t && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

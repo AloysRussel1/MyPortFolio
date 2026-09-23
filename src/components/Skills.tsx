@@ -1,165 +1,87 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Em, Reveal, SectionHeader } from './ui';
+import { accentBg, techIcons } from './tech';
+import { projects, skillGroups } from '../portfolio';
 
-const skillCategories = [
-  {
-    label: '01',
-    name: 'Frontend',
-    description: 'Interfaces réactives et expériences utilisateur modernes',
-    skills: [
-      { name: 'React', level: 'Avancé' },
-      { name: 'TypeScript', level: 'Intermédiaire' },
-      { name: 'JavaScript ES6+', level: 'Avancé' },
-      { name: 'HTML5 / CSS3', level: 'Avancé' },
-      { name: 'Tailwind CSS', level: 'Avancé' },
-      { name: 'Framer Motion', level: 'Intermédiaire' },
-    ],
-    accent: '#F97316',
-  },
-  {
-    label: '02',
-    name: 'Backend & API',
-    description: 'Serveurs robustes et APIs RESTful sécurisées',
-    skills: [
-      { name: 'Python', level: 'Avancé' },
-      { name: 'Django', level: 'Avancé' },
-      { name: 'Flask', level: 'Intermédiaire' },
-      { name: 'REST API', level: 'Avancé' },
-      { name: 'JWT / Auth', level: 'Intermédiaire' },
-      { name: 'Tests Unitaires', level: 'Intermédiaire' },
-    ],
-    accent: '#22d3ee',
-  },
-  {
-    label: '03',
-    name: 'Data & IA',
-    description: 'Modèles prédictifs et analyse de données',
-    skills: [
-      { name: 'TensorFlow', level: 'Intermédiaire' },
-      { name: 'Scikit-learn', level: 'Intermédiaire' },
-      { name: 'Pandas', level: 'Avancé' },
-      { name: 'NumPy', level: 'Avancé' },
-      { name: 'Matplotlib', level: 'Intermédiaire' },
-      { name: 'Analyse de données', level: 'Avancé' },
-    ],
-    accent: '#a78bfa',
-  },
-  {
-    label: '04',
-    name: 'DevOps & BDD',
-    description: 'Infrastructure, bases de données et collaboration',
-    skills: [
-      { name: 'PostgreSQL', level: 'Intermédiaire' },
-      { name: 'MySQL', level: 'Intermédiaire' },
-      { name: 'Git / GitHub', level: 'Avancé' },
-      { name: 'Docker', level: 'Notions' },
-      { name: 'AWS', level: 'Notions' },
-      { name: 'Agile / Scrum', level: 'Intermédiaire' },
-    ],
-    accent: '#34d399',
-  },
-];
+/**
+ * Stack technique en tags. Les puces « projet » filtrent : les compétences
+ * utilisées dans le projet choisi s'allument, les autres s'estompent.
+ */
+const Skills = () => {
+  const [filter, setFilter] = useState<string | null>(null);
+  const active = filter ? projects.find(p => p.id === filter)?.uses ?? [] : null;
 
-const levelColor: Record<string, string> = {
-  Avancé: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/25',
-  Intermédiaire: 'text-amber-400 bg-amber-400/10 border-amber-400/25',
-  Notions: 'text-white/40 bg-white/5 border-white/10',
-};
+  return (
+    <section id="skills" className="py-24 md:py-32">
+      <div className="container-x">
+        <SectionHeader
+          index="04"
+          label="stack"
+          title={
+            <>
+              Les outils, <Em>pas les buzzwords</Em>.
+            </>
+          }
+          aside="Clique sur un projet pour voir exactement ce qui tourne dessous."
+        />
 
-const Skills = () => (
-  <section id="skills" className="bg-[#0d0d14] py-28 px-6 lg:px-12">
-    <div className="max-w-7xl mx-auto">
-
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="mb-16"
-      >
-        <p className="font-mono text-[#F97316] text-xs tracking-widest uppercase mb-3">
-          — Stack technique
-        </p>
-        <h2 className="text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
-          Compétences
-        </h2>
-        <p className="text-white/50 max-w-xl text-base leading-relaxed">
-          Maîtrise du cycle complet d'une application web, du pixel à la base de données,
-          avec une couche IA sur les projets data.
-        </p>
-      </motion.div>
-
-      <div className="grid md:grid-cols-2 gap-6">
-        {skillCategories.map((cat, index) => (
-          <motion.div
-            key={cat.name}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="bg-[#0f0f18] border border-white/6 rounded-xl p-7 hover:border-white/12 transition-all duration-500 group"
-          >
-            {/* Card header */}
-            <div className="flex items-start justify-between mb-5">
-              <div>
-                <p className="font-mono text-white/20 text-xs tracking-widest mb-1">
-                  {cat.label}
-                </p>
-                <h3 className="text-xl font-bold text-white group-hover:text-[#F97316] transition-colors">
-                  {cat.name}
-                </h3>
-                <p className="text-white/40 text-xs mt-1">{cat.description}</p>
-              </div>
-              <span
-                className="w-8 h-8 rounded-full flex-shrink-0 mt-1"
-                style={{ backgroundColor: cat.accent + '20', border: `1px solid ${cat.accent}40` }}
+        <Reveal className="mb-6 flex flex-wrap items-center gap-2">
+          <span className="mr-1 font-mono text-xs text-muted">filtrer →</span>
+          {[{ id: null, title: 'Tout' }, ...projects].map(p => {
+            const on = filter === p.id;
+            return (
+              <button
+                key={p.id ?? 'all'}
+                onClick={() => setFilter(p.id)}
+                aria-pressed={on}
+                className={`rounded-full border px-3.5 py-1.5 text-[13px] transition-colors ${
+                  on ? 'border-fg bg-fg text-bg' : 'border-line/15 text-muted hover:border-line/30 hover:text-fg'
+                }`}
               >
-                <span
-                  className="block w-2 h-2 rounded-full m-auto mt-2.5"
-                  style={{ backgroundColor: cat.accent }}
-                />
-              </span>
-            </div>
+                {p.title}
+              </button>
+            );
+          })}
+        </Reveal>
 
-            {/* Skills list */}
-            <div className="flex flex-col gap-2.5">
-              {cat.skills.map(skill => (
-                <div key={skill.name} className="flex items-center justify-between">
-                  <span className="text-sm text-white/70 font-medium">{skill.name}</span>
-                  <span
-                    className={`text-[10px] font-mono px-2 py-0.5 rounded border ${levelColor[skill.level]}`}
-                  >
-                    {skill.level}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        ))}
+        <div className="grid gap-4 sm:grid-cols-2">
+          {skillGroups.map((g, gi) => (
+            <Reveal
+              key={g.id}
+              delay={gi * 0.06}
+              className="rounded-3xl border border-line/10 bg-surface p-6 md:p-7"
+            >
+              <div className="mb-5 flex items-center gap-3">
+                <span className={`h-2.5 w-2.5 rounded-sm ${accentBg[g.accent]}`} />
+                <h3 className="text-lg font-semibold tracking-tight">{g.name}</h3>
+                <span className="ml-auto font-mono text-xs text-muted">{String(g.items.length).padStart(2, '0')}</span>
+              </div>
+              <ul className="flex flex-wrap gap-2">
+                {g.items.map(item => {
+                  const Icon = techIcons[item];
+                  const lit = active ? active.includes(item) : true;
+                  return (
+                    <motion.li
+                      key={item}
+                      animate={{ opacity: lit ? 1 : 0.25, scale: lit && active ? 1.04 : 1 }}
+                      transition={{ duration: 0.25 }}
+                      className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm transition-colors ${
+                        lit && active ? 'border-cyan/50 bg-cyan/10' : 'border-line/10 bg-elevated/50'
+                      }`}
+                    >
+                      {Icon && <Icon className="h-4 w-4 text-muted" aria-hidden />}
+                      {item}
+                    </motion.li>
+                  );
+                })}
+              </ul>
+            </Reveal>
+          ))}
+        </div>
       </div>
-
-      {/* Bottom extras */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="mt-8 p-6 bg-[#0f0f18] border border-white/6 rounded-xl flex flex-wrap gap-3 items-center"
-      >
-        <span className="text-white/40 text-xs font-mono uppercase tracking-widest mr-2">
-          Aussi:
-        </span>
-        {['Bilingue FR/EN', 'Travail en équipe', 'Agile', 'Communication client', 'Résolution de problèmes'].map(soft => (
-          <span
-            key={soft}
-            className="px-3 py-1 text-xs text-white/60 bg-white/5 border border-white/8 rounded-full"
-          >
-            {soft}
-          </span>
-        ))}
-      </motion.div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default Skills;

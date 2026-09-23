@@ -1,232 +1,174 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
-import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { FiArrowUpRight, FiCheck, FiMapPin, FiPhone, FiSend } from 'react-icons/fi';
+import { FaGithub, FaLinkedinIn } from 'react-icons/fa';
+import { Em, Reveal } from './ui';
+import { profile } from '../portfolio';
+
+type Status = 'idle' | 'sending' | 'sent' | 'error';
+
+const field =
+  'w-full rounded-xl border border-line/10 bg-bg px-4 py-3 text-sm placeholder:text-muted/60 transition-colors focus:border-cyan/60 focus:outline-none focus:ring-4 focus:ring-cyan/10';
 
 const Contact = () => {
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<Status>('idle');
   const [form, setForm] = useState({ name: '', email: '', message: '' });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-
+    setStatus('sending');
     try {
-      const response = await fetch('https://formspree.io/f/mrejvywy', {
+      const res = await fetch(profile.formspree, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          message: form.message,
-        }),
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(form),
       });
-
-      if (response.ok) {
-        setSubmitted(true);
-        setForm({ name: '', email: '', message: '' });
-        setTimeout(() => setSubmitted(false), 5000);
-      }
-    } catch (error) {
-      console.error('Erreur:', error);
-    } finally {
-      setLoading(false);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setStatus('sent');
+      setForm({ name: '', email: '', message: '' });
+      setTimeout(() => setStatus('idle'), 6000);
+    } catch (err) {
+      console.error('Erreur formulaire :', err);
+      setStatus('error');
     }
   };
 
   return (
-    <section id="contact" className="bg-[#0a0a0f] py-28 px-6 lg:px-12">
-      <div className="max-w-7xl mx-auto">
+    <section id="contact" className="relative overflow-hidden py-24 md:py-32">
+      <div className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-gradient-to-r from-cyan/15 via-violet/15 to-magenta/15 blur-[120px]" />
 
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-16"
-        >
-          <p className="font-mono text-[#F97316] text-xs tracking-widest uppercase mb-3">
-            — Parlons-en
+      <div className="container-x">
+        <Reveal>
+          <p className="mb-4 font-mono text-xs text-muted">
+            <span className="text-cyan">//</span> 06 <span className="text-fg/30">—</span> contact
           </p>
-          <h2 className="text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
-            Me contacter
+          <h2 className="max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl md:text-7xl">
+            Construisons quelque chose <Em>d'utile</Em>.
           </h2>
-          <p className="text-white/50 max-w-xl text-base leading-relaxed">
-            Vous avez un projet, une opportunité ou simplement envie d'échanger ?
-            Je réponds dans les 24 heures.
+          <p className="mt-6 max-w-xl text-muted">
+            Stage, poste, mission freelance ou projet IA : je réponds sous 24 h.
           </p>
-        </motion.div>
+        </Reveal>
 
-        <div className="grid lg:grid-cols-5 gap-10">
-
-          {/* Left — Info */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="lg:col-span-2 flex flex-col gap-6"
-          >
-            {/* Contact cards */}
-            {[
-              {
-                icon: <FaEnvelope />,
-                label: 'Email',
-                value: 'rtonfo@gmail.com',
-                href: 'mailto:rtonfo@gmail.com',
-              },
-              {
-                icon: <FaPhone />,
-                label: 'Téléphone',
-                value: '+1 418 473-7672',
-                href: 'tel:+14184737672',
-              },
-              {
-                icon: <FaMapMarkerAlt />,
-                label: 'Localisation',
-                value: 'Saint-Jérôme, QC — Remote OK',
-                href: null,
-              },
-            ].map(info => (
-              <div
-                key={info.label}
-                className="flex gap-4 bg-[#0f0f18] border border-white/6 rounded-xl p-5 hover:border-[#F97316]/25 transition-all"
-              >
-                <div className="w-10 h-10 flex-shrink-0 bg-[#F97316]/10 border border-[#F97316]/25 rounded-lg flex items-center justify-center text-[#F97316] text-sm">
-                  {info.icon}
-                </div>
-                <div>
-                  <p className="text-white/40 text-xs font-mono uppercase tracking-widest mb-0.5">
-                    {info.label}
-                  </p>
-                  {info.href ? (
-                    <a
-                      href={info.href}
-                      className="text-white/80 text-sm hover:text-[#F97316] transition-colors"
-                    >
-                      {info.value}
-                    </a>
-                  ) : (
-                    <p className="text-white/80 text-sm">{info.value}</p>
-                  )}
-                </div>
+        <div className="mt-14 grid gap-4 lg:grid-cols-5">
+          <Reveal className="flex flex-col gap-4 lg:col-span-2">
+            <a
+              href={`mailto:${profile.email}`}
+              data-cursor="écrire"
+              className="ring-gradient group flex items-center justify-between rounded-3xl border border-line/10 bg-surface p-6"
+            >
+              <div className="min-w-0">
+                <p className="font-mono text-[11px] uppercase tracking-wider text-muted">Email</p>
+                <p className="mt-1 truncate text-lg font-medium sm:text-xl">{profile.email}</p>
               </div>
-            ))}
+              <FiArrowUpRight className="flex-shrink-0 text-2xl text-muted transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-cyan" />
+            </a>
 
-            {/* Social links */}
-            <div className="bg-[#0f0f18] border border-white/6 rounded-xl p-5">
-              <p className="text-white/40 text-xs font-mono uppercase tracking-widest mb-4">
-                Réseaux
-              </p>
-              <div className="flex gap-4">
-                <a
-                  href="https://github.com/AloysRussel1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2.5 text-white/60 text-sm hover:text-white transition-colors"
-                >
-                  <FaGithub size={18} /> GitHub
-                </a>
-                <a
-                  href="https://linkedin.com/in/AloysRussel1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2.5 text-white/60 text-sm hover:text-[#0077b5] transition-colors"
-                >
-                  <FaLinkedin size={18} /> LinkedIn
-                </a>
+            <div className="grid grid-cols-2 gap-4">
+              <a href={profile.phoneHref} className="rounded-3xl border border-line/10 bg-surface p-5 transition-colors hover:border-line/25">
+                <FiPhone className="mb-3 text-muted" />
+                <p className="text-sm font-medium">{profile.phone}</p>
+              </a>
+              <div className="rounded-3xl border border-line/10 bg-surface p-5">
+                <FiMapPin className="mb-3 text-muted" />
+                <p className="text-sm font-medium">{profile.location}</p>
               </div>
             </div>
-          </motion.div>
 
-          {/* Right — Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="lg:col-span-3 bg-[#0f0f18] border border-white/6 rounded-xl p-8"
-          >
-            {submitted ? (
-              <div className="h-full flex flex-col items-center justify-center text-center py-12">
-                <div className="w-16 h-16 bg-emerald-400/10 border border-emerald-400/25 rounded-full flex items-center justify-center mb-4">
-                  <span className="text-emerald-400 text-2xl">✓</span>
-                </div>
-                <h3 className="text-white font-bold text-xl mb-2">Message envoyé !</h3>
-                <p className="text-white/50 text-sm">Je vous réponds dans les meilleurs délais.</p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-white/50 text-xs font-mono uppercase tracking-widest">
-                      Nom complet *
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={form.name}
-                      onChange={handleChange}
-                      required
-                      placeholder="Jean Dupont"
-                      className="bg-[#0a0a0f] border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-white/25 focus:outline-none focus:border-[#F97316]/60 transition-colors"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label className="text-white/50 text-xs font-mono uppercase tracking-widest">
-                      Email *
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={form.email}
-                      onChange={handleChange}
-                      required
-                      placeholder="jean@exemple.com"
-                      className="bg-[#0a0a0f] border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-white/25 focus:outline-none focus:border-[#F97316]/60 transition-colors"
-                    />
-                  </div>
-                </div>
+            <div className="grid grid-cols-2 gap-4">
+              <a
+                href={profile.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-3 rounded-3xl border border-line/10 bg-surface p-5 transition-colors hover:border-fg/40"
+              >
+                <FaGithub className="text-xl" />
+                <span className="text-sm font-medium">GitHub</span>
+                <FiArrowUpRight className="ml-auto text-muted transition-colors group-hover:text-fg" />
+              </a>
+              <a
+                href={profile.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-3 rounded-3xl border border-line/10 bg-surface p-5 transition-colors hover:border-[#0a66c2]/60"
+              >
+                <FaLinkedinIn className="text-xl text-[#0a66c2]" />
+                <span className="text-sm font-medium">LinkedIn</span>
+                <FiArrowUpRight className="ml-auto text-muted transition-colors group-hover:text-fg" />
+              </a>
+            </div>
+          </Reveal>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-white/50 text-xs font-mono uppercase tracking-widest">
-                    Message *
-                  </label>
-                  <textarea
-                    name="message"
-                    value={form.message}
-                    onChange={handleChange}
-                    required
-                    rows={6}
-                    placeholder="Décrivez votre projet ou opportunité..."
-                    className="bg-[#0a0a0f] border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-white/25 focus:outline-none focus:border-[#F97316]/60 transition-colors resize-none"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="mt-2 w-full py-4 bg-[#F97316] text-[#0a0a0f] font-bold text-sm tracking-wide rounded-lg hover:bg-[#fb923c] disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-[#F97316]/20 hover:shadow-[#F97316]/40"
+          <Reveal delay={0.1} className="rounded-3xl border border-line/10 bg-surface p-6 md:p-8 lg:col-span-3">
+            <AnimatePresence mode="wait">
+              {status === 'sent' ? (
+                <motion.div
+                  key="sent"
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex h-full min-h-[320px] flex-col items-center justify-center text-center"
                 >
-                  {loading ? 'Envoi en cours...' : 'Envoyer le message →'}
-                </button>
+                  <span className="mb-4 grid h-14 w-14 place-items-center rounded-full border border-lime/30 bg-lime/10 text-2xl text-lime">
+                    <FiCheck />
+                  </span>
+                  <p className="text-xl font-semibold">Message envoyé.</p>
+                  <p className="mt-1 text-sm text-muted">Je te réponds très vite.</p>
+                </motion.div>
+              ) : (
+                <motion.form key="form" onSubmit={onSubmit} exit={{ opacity: 0 }} className="flex flex-col gap-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <label className="flex flex-col gap-2">
+                      <span className="font-mono text-[11px] uppercase tracking-wider text-muted">Nom</span>
+                      <input name="name" value={form.name} onChange={onChange} required placeholder="Jean Dupont" className={field} />
+                    </label>
+                    <label className="flex flex-col gap-2">
+                      <span className="font-mono text-[11px] uppercase tracking-wider text-muted">Email</span>
+                      <input
+                        type="email"
+                        name="email"
+                        value={form.email}
+                        onChange={onChange}
+                        required
+                        placeholder="jean@entreprise.com"
+                        className={field}
+                      />
+                    </label>
+                  </div>
+                  <label className="flex flex-col gap-2">
+                    <span className="font-mono text-[11px] uppercase tracking-wider text-muted">Message</span>
+                    <textarea
+                      name="message"
+                      value={form.message}
+                      onChange={onChange}
+                      required
+                      rows={5}
+                      placeholder="Parle-moi de ton projet…"
+                      className={`${field} resize-none`}
+                    />
+                  </label>
 
-                <p className="text-white/25 text-xs text-center">
-                  Ou contactez-moi directement à{' '}
-                  <a href="mailto:rtonfo@gmail.com" className="text-[#F97316]/60 hover:text-[#F97316]">
-                    rtonfo@gmail.com
-                  </a>
-                </p>
-              </form>
-            )}
-          </motion.div>
+                  {status === 'error' && (
+                    <p className="text-sm text-red-500">
+                      L'envoi a échoué. Réessaie, ou écris-moi directement à {profile.email}.
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={status === 'sending'}
+                    className="group mt-1 inline-flex items-center justify-center gap-2 rounded-full bg-fg px-6 py-3.5 text-sm font-medium text-bg transition-transform hover:scale-[1.01] disabled:opacity-60"
+                  >
+                    {status === 'sending' ? 'Envoi…' : 'Envoyer le message'}
+                    <FiSend className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </button>
+                </motion.form>
+              )}
+            </AnimatePresence>
+          </Reveal>
         </div>
       </div>
     </section>

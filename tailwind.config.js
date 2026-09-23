@@ -1,30 +1,46 @@
 /** @type {import('tailwindcss').Config} */
+const v = (name) => `rgb(var(--${name}) / <alpha-value>)`;
+
 export default {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
-        orange: '#F97316',
-        lightOrange: '#fb923c',
-        darkbg: '#0a0a0f',
-        primary: '#F97316',
-        'main-text': '#ffffff',
-        'sub-text': '#9ca3af',
-        surface: '#111827',
+        bg: v('bg'),
+        surface: v('surface'),
+        elevated: v('elevated'),
+        fg: v('fg'),
+        muted: v('muted'),
+        line: v('line'),
+        cyan: v('cyan'),
+        magenta: v('magenta'),
+        violet: v('violet'),
+        lime: v('lime'),
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
-      },
-      animation: {
-        'float': 'float 6s ease-in-out infinite',
-        'pulse-slow': 'pulse 4s ease-in-out infinite',
+        sans: ['Geist', 'Inter', 'system-ui', 'sans-serif'],
+        mono: ['"Geist Mono"', '"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        serif: ['"Instrument Serif"', 'Georgia', 'serif'],
       },
       keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
+        marquee: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-50%)' },
         },
+        scan: {
+          '0%, 100%': { top: '0%' },
+          '50%': { top: '100%' },
+        },
+        blink: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0' },
+        },
+      },
+      animation: {
+        marquee: 'marquee 40s linear infinite',
+        scan: 'scan 5s ease-in-out infinite',
+        blink: 'blink 1s step-end infinite',
       },
     },
   },
